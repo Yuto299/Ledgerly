@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { format } from "date-fns";
 import { useDashboardData } from "@/features/reports/hooks/useReports";
+import { useAlerts } from "@/features/alerts/hooks/useAlerts";
 import { formatCurrency } from "@/lib/money/formatter";
 import { formatDate } from "@/lib/utils";
 import Card from "@/components/atoms/Card";
@@ -45,6 +46,7 @@ export default function DashboardPage() {
     format(new Date(), "yyyy-MM")
   );
   const { data, isLoading } = useDashboardData(selectedMonth);
+  const { data: alertsData, isLoading: alertsLoading } = useAlerts();
 
   if (isLoading) {
     return (
@@ -82,6 +84,114 @@ export default function DashboardPage() {
           className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg text-sm sm:text-base"
         />
       </div>
+
+      {/* アラートセクション */}
+      {alertsData &&
+        (alertsData.summary.overdueCount > 0 ||
+          alertsData.summary.urgentCount > 0) && (
+          <div className="mb-6 md:mb-8 space-y-4">
+            {/* 期限切れアラート */}
+            {alertsData.summary.overdueCount > 0 && (
+              <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">⚠️</span>
+                    <div>
+                      <h3 className="text-lg font-semibold text-red-900">
+                        支払期限切れの請求書
+                      </h3>
+                      <p className="text-sm text-red-700">
+                        {alertsData.summary.overdueCount}件 (
+                        {formatCurrency(alertsData.summary.overdueAmount)})
+                      </p>
+                    </div>
+                  </div>
+                  <Link href="/invoices">
+                    <Button variant="danger" size="sm">
+                      確認する
+                    </Button>
+                  </Link>
+                </div>
+                <div className="space-y-2">
+                  {alertsData.overdue.slice(0, 3).map((invoice) => (
+                    <Link
+                      key={invoice.id}
+                      href={`/invoices/${invoice.id}`}
+                      className="block p-3 bg-white rounded border border-red-200 hover:border-red-300 transition-colors"
+                    >
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="font-medium text-gray-900">
+                            {invoice.customer.name}
+                            {invoice.project && ` - ${invoice.project.name}`}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            期限: {formatDate(invoice.dueAt)}
+                          </p>
+                        </div>
+                        <p className="font-bold text-red-600">
+                          {formatCurrency(
+                            invoice.totalAmount - invoice.paidAmount
+                          )}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 期限間近アラート（3日以内） */}
+            {alertsData.summary.urgentCount > 0 && (
+              <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">⏰</span>
+                    <div>
+                      <h3 className="text-lg font-semibold text-yellow-900">
+                        支払期限間近（3日以内）
+                      </h3>
+                      <p className="text-sm text-yellow-700">
+                        {alertsData.summary.urgentCount}件
+                      </p>
+                    </div>
+                  </div>
+                  <Link href="/invoices">
+                    <Button variant="outline" size="sm">
+                      確認する
+                    </Button>
+                  </Link>
+                </div>
+                <div className="space-y-2">
+                  {alertsData.urgent.slice(0, 3).map((invoice) => (
+                    <Link
+                      key={invoice.id}
+                      href={`/invoices/${invoice.id}`}
+                      className="block p-3 bg-white rounded border border-yellow-200 hover:border-yellow-300 transition-colors"
+                    >
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="font-medium text-gray-900">
+                            {invoice.customer.name}
+                            {invoice.project && ` - ${invoice.project.name}`}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            期限: {formatDate(invoice.dueAt)}
+                          </p>
+                        </div>
+                        <p className="font-bold text-yellow-600">
+                          {formatCurrency(
+                            invoice.totalAmount - invoice.paidAmount
+                          )}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
       {/* サマリカード */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">

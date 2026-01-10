@@ -2,6 +2,7 @@
 
 import { use, useState } from "react";
 import Link from "next/link";
+import { pdf } from "@react-pdf/renderer";
 import {
   useInvoice,
   useDeleteInvoice,
@@ -17,6 +18,7 @@ import Button from "@/components/atoms/Button";
 import Badge from "@/components/atoms/Badge";
 import { Modal } from "@/components/molecules/Modal";
 import { PaymentForm } from "@/features/payments/components/PaymentForm";
+import { InvoicePDF } from "@/components/pdf/InvoicePDF";
 import { formatDate } from "@/lib/utils";
 import { formatCurrency } from "@/lib/money/formatter";
 import { CreatePaymentDto } from "@/features/payments/schemas/paymentSchema";
@@ -50,6 +52,7 @@ export default function InvoiceDetailPage({
     useRegisterPayment(id);
   const { mutate: deletePayment } = useDeletePayment(id);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isDownloadingPDF, setIsDownloadingPDF] = useState(false);
 
   const handleDelete = () => {
     if (window.confirm("この請求書を削除してもよろしいですか？")) {
@@ -60,6 +63,48 @@ export default function InvoiceDetailPage({
   const handleMarkSent = () => {
     if (window.confirm("この請求書を送付済みにしますか？")) {
       markSent(id);
+    }
+  };
+
+  const handleDownloadPDF = async () => {
+    if (!invoice) return;
+
+    setIsDownloadingPDF(true);
+    try {
+      // PDFを生成
+      const blob = await pdf(
+        <InvoicePDF
+          invoice={{
+            ...invoice,
+            items: items.map((item) => ({
+              ...item,
+              name: item.description,
+              description: null,
+            })),
+          }}
+          companyInfo={{
+            name: "あなたの会社名",
+            address: "〒000-0000 東京都〇〇区〇〇 1-2-3",
+            phone: "03-1234-5678",
+            email: "info@yourcompany.com",
+          }}
+        />
+      ).toBlob();
+
+      // ダウンロード
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `invoice_${invoice.invoiceNumber || invoice.id}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("PDF generation error:", error);
+      alert("PDFの生成に失敗しました");
+    } finally {
+      setIsDownloadingPDF(false);
     }
   };
 
@@ -122,6 +167,13 @@ export default function InvoiceDetailPage({
               {isSending ? "送付中..." : "送付済みにする"}
             </Button>
           )}
+          <Button
+            variant="outline"
+            onClick={handleDownloadPDF}
+            disabled={isDownloadingPDF}
+          >
+            {isDownloadingPDF ? "生成中..." : "📄 PDF出力"}
+          </Button>
           <Link href={`/invoices/${id}/edit`}>
             <Button variant="outline">編集</Button>
           </Link>

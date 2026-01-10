@@ -12,6 +12,7 @@ import Badge from "@/components/atoms/Badge";
 import { formatDate } from "@/lib/utils";
 import { formatCurrency } from "@/lib/money/formatter";
 import { useToast } from "@/components/providers/ToastProvider";
+import { exportToCSV } from "@/lib/csv/generator";
 
 const STATUS_LABELS: Record<string, string> = {
   DRAFT: "下書き",
@@ -57,6 +58,43 @@ export default function InvoicesPage() {
     }
   };
 
+  const handleExportCSV = () => {
+    if (!invoices || invoices.length === 0) {
+      addToast("エクスポートするデータがありません", "warning");
+      return;
+    }
+
+    const csvData = invoices.map((invoice) => ({
+      invoiceNumber: invoice.invoiceNumber || "",
+      customer: invoice.customer?.name || "",
+      project: invoice.project?.name || "",
+      status: STATUS_LABELS[invoice.status] || invoice.status,
+      issuedAt: formatDate(invoice.issuedAt),
+      dueAt: formatDate(invoice.dueAt),
+      totalAmount: invoice.totalAmount,
+      paidAmount: invoice.paidAmount,
+      unpaidAmount: invoice.totalAmount - invoice.paidAmount,
+    }));
+
+    exportToCSV(
+      csvData,
+      [
+        { label: "請求書番号", key: "invoiceNumber" },
+        { label: "顧客", key: "customer" },
+        { label: "案件", key: "project" },
+        { label: "ステータス", key: "status" },
+        { label: "発行日", key: "issuedAt" },
+        { label: "支払期限", key: "dueAt" },
+        { label: "請求金額", key: "totalAmount" },
+        { label: "入金済", key: "paidAmount" },
+        { label: "未払金額", key: "unpaidAmount" },
+      ],
+      `invoices_${new Date().toISOString().split("T")[0]}.csv`
+    );
+
+    addToast("CSVをエクスポートしました", "success");
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -79,9 +117,18 @@ export default function InvoicesPage() {
     <div className="px-4 py-4 md:px-0 md:py-0">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h1 className="text-2xl sm:text-3xl font-bold">請求書管理</h1>
-        <Link href="/invoices/new">
-          <Button className="w-full sm:w-auto">+ 新規請求書</Button>
-        </Link>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <Button
+            variant="outline"
+            onClick={handleExportCSV}
+            className="flex-1 sm:flex-initial"
+          >
+            📊 CSV出力
+          </Button>
+          <Link href="/invoices/new" className="flex-1 sm:flex-initial">
+            <Button className="w-full">+ 新規請求書</Button>
+          </Link>
+        </div>
       </div>
 
       <div className="mb-4">

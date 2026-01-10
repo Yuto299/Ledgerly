@@ -14,6 +14,7 @@ import Badge from "@/components/atoms/Badge";
 import { formatDate } from "@/lib/utils";
 import { formatCurrency } from "@/lib/money/formatter";
 import { useToast } from "@/components/providers/ToastProvider";
+import { exportToCSV } from "@/lib/csv/generator";
 
 const PAYMENT_METHOD_LABELS: Record<string, string> = {
   BANK_TRANSFER: "銀行振込",
@@ -53,6 +54,40 @@ export default function ExpensesPage() {
     }
   };
 
+  const handleExportCSV = () => {
+    if (!expenses || expenses.length === 0) {
+      addToast("エクスポートするデータがありません", "warning");
+      return;
+    }
+
+    const csvData = expenses.map((expense) => ({
+      date: formatDate(expense.date),
+      description: expense.description,
+      category: expense.category?.name || "",
+      project: expense.project?.name || "",
+      amount: expense.amount,
+      paymentMethod:
+        PAYMENT_METHOD_LABELS[expense.paymentMethod] || expense.paymentMethod,
+      notes: expense.notes || "",
+    }));
+
+    exportToCSV(
+      csvData,
+      [
+        { label: "日付", key: "date" },
+        { label: "説明", key: "description" },
+        { label: "カテゴリ", key: "category" },
+        { label: "案件", key: "project" },
+        { label: "金額", key: "amount" },
+        { label: "支払方法", key: "paymentMethod" },
+        { label: "備考", key: "notes" },
+      ],
+      `expenses_${new Date().toISOString().split("T")[0]}.csv`
+    );
+
+    addToast("CSVをエクスポートしました", "success");
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -77,9 +112,18 @@ export default function ExpensesPage() {
     <div className="px-4 py-4 md:px-0 md:py-0">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h1 className="text-2xl sm:text-3xl font-bold">経費管理</h1>
-        <Link href="/expenses/new">
-          <Button className="w-full sm:w-auto">+ 新規経費</Button>
-        </Link>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <Button
+            variant="outline"
+            onClick={handleExportCSV}
+            className="flex-1 sm:flex-initial"
+          >
+            📊 CSV出力
+          </Button>
+          <Link href="/expenses/new" className="flex-1 sm:flex-initial">
+            <Button className="w-full">+ 新規経費</Button>
+          </Link>
+        </div>
       </div>
 
       <Card className="mb-6">
