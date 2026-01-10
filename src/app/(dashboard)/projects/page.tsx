@@ -2,12 +2,16 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useProjects } from "@/features/projects/hooks/useProjects";
+import {
+  useProjects,
+  useDeleteProject,
+} from "@/features/projects/hooks/useProjects";
 import Card from "@/components/atoms/Card";
 import Button from "@/components/atoms/Button";
 import Badge from "@/components/atoms/Badge";
 import { formatDate } from "@/lib/utils";
 import { formatCurrency } from "@/lib/money/formatter";
+import { useToast } from "@/components/providers/ToastProvider";
 
 const STATUS_LABELS: Record<string, string> = {
   PROSPECT: "見込み",
@@ -37,6 +41,29 @@ export default function ProjectsPage() {
   const { data, isLoading, error } = useProjects({
     status: statusFilter || undefined,
   });
+  const { mutate: deleteProject } = useDeleteProject();
+  const { addToast } = useToast();
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const handleDelete = (projectId: string, projectName: string) => {
+    if (
+      window.confirm(
+        `案件「${projectName}」を削除しますか？\n関連する請求書や経費も影響を受ける可能性があります。`
+      )
+    ) {
+      setDeletingId(projectId);
+      deleteProject(projectId, {
+        onSuccess: () => {
+          addToast("案件を削除しました", "success");
+          setDeletingId(null);
+        },
+        onError: (error) => {
+          addToast(`削除に失敗しました: ${error.message}`, "error");
+          setDeletingId(null);
+        },
+      });
+    }
+  };
 
   if (isLoading) {
     return (
@@ -159,10 +186,17 @@ export default function ProjectsPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <Link
                         href={`/projects/${project.id}/edit`}
-                        className="text-primary-600 hover:text-primary-900"
+                        className="text-primary-600 hover:text-primary-900 mr-4"
                       >
                         編集
                       </Link>
+                      <button
+                        onClick={() => handleDelete(project.id, project.name)}
+                        disabled={deletingId === project.id}
+                        className="text-red-600 hover:text-red-900 disabled:opacity-50"
+                      >
+                        {deletingId === project.id ? "削除中..." : "削除"}
+                      </button>
                     </td>
                   </tr>
                 ))}

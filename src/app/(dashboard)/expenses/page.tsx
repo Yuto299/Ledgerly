@@ -13,6 +13,7 @@ import Button from "@/components/atoms/Button";
 import Badge from "@/components/atoms/Badge";
 import { formatDate } from "@/lib/utils";
 import { formatCurrency } from "@/lib/money/formatter";
+import { useToast } from "@/components/providers/ToastProvider";
 
 const PAYMENT_METHOD_LABELS: Record<string, string> = {
   BANK_TRANSFER: "銀行振込",
@@ -33,10 +34,22 @@ export default function ExpensesPage() {
   const { data: categoriesData } = useExpenseCategories();
   const { data: projectsData } = useProjects({ limit: 100 });
   const { mutate: deleteExpense, isPending: isDeleting } = useDeleteExpense();
+  const { addToast } = useToast();
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  const handleDelete = (expenseId: string) => {
-    if (window.confirm("この経費を削除してもよろしいですか？")) {
-      deleteExpense(expenseId);
+  const handleDelete = (expenseId: string, description: string) => {
+    if (window.confirm(`経費「${description}」を削除しますか？`)) {
+      setDeletingId(expenseId);
+      deleteExpense(expenseId, {
+        onSuccess: () => {
+          addToast("経費を削除しました", "success");
+          setDeletingId(null);
+        },
+        onError: (error) => {
+          addToast(`削除に失敗しました: ${error.message}`, "error");
+          setDeletingId(null);
+        },
+      });
     }
   };
 
@@ -200,11 +213,16 @@ export default function ExpensesPage() {
                         編集
                       </Link>
                       <button
-                        onClick={() => handleDelete(expense.id)}
-                        disabled={isDeleting}
-                        className="text-red-600 hover:text-red-900"
+                        onClick={() =>
+                          handleDelete(
+                            expense.id,
+                            expense.description || "経費"
+                          )
+                        }
+                        disabled={deletingId === expense.id}
+                        className="text-red-600 hover:text-red-900 disabled:opacity-50"
                       >
-                        削除
+                        {deletingId === expense.id ? "削除中..." : "削除"}
                       </button>
                     </td>
                   </tr>

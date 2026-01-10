@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useInvoices, useDeleteInvoice } from "@/features/invoices/hooks/useInvoices";
+import {
+  useInvoices,
+  useDeleteInvoice,
+} from "@/features/invoices/hooks/useInvoices";
 import Card from "@/components/atoms/Card";
 import Button from "@/components/atoms/Button";
 import Badge from "@/components/atoms/Badge";
@@ -35,7 +38,11 @@ export default function InvoicesPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const handleDelete = (invoiceId: string, invoiceNumber: string) => {
-    if (window.confirm(`請求書「${invoiceNumber}」を削除しますか？\n関連する入金記録も削除されます。`)) {
+    if (
+      window.confirm(
+        `請求書「${invoiceNumber}」を削除しますか？\n関連する入金記録も削除されます。`
+      )
+    ) {
       setDeletingId(invoiceId);
       deleteInvoice(invoiceId, {
         onSuccess: () => {
@@ -179,10 +186,22 @@ export default function InvoicesPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <Link
                         href={`/invoices/${invoice.id}/edit`}
-                        className="text-primary-600 hover:text-primary-900"
+                        className="text-primary-600 hover:text-primary-900 mr-4"
                       >
                         編集
                       </Link>
+                      <button
+                        onClick={() =>
+                          handleDelete(
+                            invoice.id,
+                            invoice.invoiceNumber || "請求書"
+                          )
+                        }
+                        disabled={deletingId === invoice.id}
+                        className="text-red-600 hover:text-red-900 disabled:opacity-50"
+                      >
+                        {deletingId === invoice.id ? "削除中..." : "削除"}
+                      </button>
                     </td>
                   </tr>
                 ))}

@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useCustomers, useDeleteCustomer } from "@/features/customers/hooks/useCustomers";
+import {
+  useCustomers,
+  useDeleteCustomer,
+} from "@/features/customers/hooks/useCustomers";
 import Card from "@/components/atoms/Card";
 import Button from "@/components/atoms/Button";
 import { TableSkeleton } from "@/components/atoms/Skeleton";
@@ -16,7 +19,11 @@ export default function CustomersPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const handleDelete = (customerId: string, customerName: string) => {
-    if (window.confirm(`「${customerName}」を削除しますか？\nこの操作は元に戻せません。`)) {
+    if (
+      window.confirm(
+        `「${customerName}」を削除しますか？\nこの操作は元に戻せません。`
+      )
+    ) {
       setDeletingId(customerId);
       deleteCustomer(customerId, {
         onSuccess: () => {
