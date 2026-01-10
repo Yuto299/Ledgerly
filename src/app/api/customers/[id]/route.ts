@@ -6,17 +6,19 @@ import { getCustomerById } from "@/application/usecases/customers/getCustomerByI
 import { updateCustomer } from "@/application/usecases/customers/updateCustomer";
 import { deleteCustomer } from "@/application/usecases/customers/deleteCustomer";
 
+type RouteContext = {
+  params: Promise<{ id: string }>;
+};
+
 /**
  * GET /api/customers/:id
  * 顧客詳細取得
  */
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, context: RouteContext) {
   try {
     const userId = await getUserId();
-    const result = await getCustomerById(params.id, userId);
+    const { id } = await context.params;
+    const result = await getCustomerById(id, userId);
 
     return handleApiSuccess(result);
   } catch (error) {
@@ -28,18 +30,16 @@ export async function GET(
  * PUT /api/customers/:id
  * 顧客更新
  */
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, context: RouteContext) {
   try {
     const userId = await getUserId();
+    const { id } = await context.params;
     const body = await request.json();
 
     // バリデーション
     const validatedData = updateCustomerSchema.parse(body);
 
-    const customer = await updateCustomer(params.id, userId, validatedData);
+    const customer = await updateCustomer(id, userId, validatedData);
 
     return handleApiSuccess(customer);
   } catch (error) {
@@ -51,13 +51,11 @@ export async function PUT(
  * DELETE /api/customers/:id
  * 顧客削除（論理削除）
  */
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, context: RouteContext) {
   try {
     const userId = await getUserId();
-    const customer = await deleteCustomer(params.id, userId);
+    const { id } = await context.params;
+    const customer = await deleteCustomer(id, userId);
 
     return handleApiSuccess(customer);
   } catch (error) {

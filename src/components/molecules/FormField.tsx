@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import Input, { InputProps } from "../atoms/Input";
 import Label from "../atoms/Label";
 
-interface FormFieldProps extends InputProps {
+interface FormFieldProps extends Omit<InputProps, "error"> {
   label: string;
   error?: string;
   required?: boolean;
