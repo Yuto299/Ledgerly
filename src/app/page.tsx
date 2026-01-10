@@ -20,12 +20,6 @@ export default function Home() {
           >
             ログイン
           </Link>
-          <Link
-            href="/dashboard"
-            className="px-6 py-3 bg-white text-primary-600 border-2 border-primary-600 rounded-lg hover:bg-primary-50 transition-colors"
-          >
-            ダッシュボード
-          </Link>
         </div>
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
           <div className="bg-white p-6 rounded-lg shadow-sm">

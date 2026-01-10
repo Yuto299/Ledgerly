@@ -32,21 +32,23 @@ async function main() {
   ];
 
   for (const [index, category] of categories.entries()) {
-    await prisma.expenseCategory.upsert({
+    const existing = await prisma.expenseCategory.findFirst({
       where: {
-        userId_name: {
-          userId: user.id,
-          name: category.name,
-        },
-      },
-      update: {},
-      create: {
         userId: user.id,
         name: category.name,
-        color: category.color,
-        sortOrder: index,
       },
     });
+
+    if (!existing) {
+      await prisma.expenseCategory.create({
+        data: {
+          userId: user.id,
+          name: category.name,
+          color: category.color,
+          sortOrder: index,
+        },
+      });
+    }
   }
 
   console.log("✅ Expense categories created");
