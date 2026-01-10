@@ -64,6 +64,16 @@ export class ConflictError extends ApiError {
 }
 
 /**
+ * ビジネスロジックエラー（400）
+ */
+export class BusinessLogicError extends ApiError {
+  constructor(message: string, details?: unknown) {
+    super(400, "BUSINESS_LOGIC_ERROR", message, details);
+    this.name = "BusinessLogicError";
+  }
+}
+
+/**
  * 内部サーバーエラー（500）
  */
 export class InternalServerError extends ApiError {
