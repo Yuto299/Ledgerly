@@ -1,10 +1,10 @@
-import { NextRequest } from 'next/server'
-import { getUserId } from '@/lib/auth/session'
-import { handleApiError, handleApiSuccess } from '@/lib/api/errorHandler'
-import { updateCustomerSchema } from '@/features/customers/schemas/customerSchema'
-import { getCustomerById } from '@/application/usecases/customers/getCustomerById'
-import { updateCustomer } from '@/application/usecases/customers/updateCustomer'
-import { deleteCustomer } from '@/application/usecases/customers/deleteCustomer'
+import { NextRequest } from "next/server";
+import { getUserId } from "@/lib/auth/session";
+import { handleApiError, handleApiSuccess } from "@/lib/api/errorHandler";
+import { updateCustomerSchema } from "@/features/customers/schemas/customerSchema";
+import { getCustomerById } from "@/application/usecases/customers/getCustomerById";
+import { updateCustomer } from "@/application/usecases/customers/updateCustomer";
+import { deleteCustomer } from "@/application/usecases/customers/deleteCustomer";
 
 /**
  * GET /api/customers/:id
@@ -15,12 +15,12 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const userId = await getUserId()
-    const result = await getCustomerById(params.id, userId)
-    
-    return handleApiSuccess(result)
+    const userId = await getUserId();
+    const result = await getCustomerById(params.id, userId);
+
+    return handleApiSuccess(result);
   } catch (error) {
-    return handleApiError(error)
+    return handleApiError(error);
   }
 }
 
@@ -33,17 +33,17 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const userId = await getUserId()
-    const body = await request.json()
-    
+    const userId = await getUserId();
+    const body = await request.json();
+
     // バリデーション
-    const validatedData = updateCustomerSchema.parse(body)
-    
-    const customer = await updateCustomer(params.id, userId, validatedData)
-    
-    return handleApiSuccess(customer)
+    const validatedData = updateCustomerSchema.parse(body);
+
+    const customer = await updateCustomer(params.id, userId, validatedData);
+
+    return handleApiSuccess(customer);
   } catch (error) {
-    return handleApiError(error)
+    return handleApiError(error);
   }
 }
 
@@ -56,11 +56,11 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const userId = await getUserId()
-    const customer = await deleteCustomer(params.id, userId)
-    
-    return handleApiSuccess(customer)
+    const userId = await getUserId();
+    const customer = await deleteCustomer(params.id, userId);
+
+    return handleApiSuccess(customer);
   } catch (error) {
-    return handleApiError(error)
+    return handleApiError(error);
   }
 }

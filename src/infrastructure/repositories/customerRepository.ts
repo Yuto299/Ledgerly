@@ -1,6 +1,9 @@
-import { prisma } from '@/infrastructure/db/prisma'
-import { Customer } from '@prisma/client'
-import { CreateCustomerDto, UpdateCustomerDto } from '@/features/customers/schemas/customerSchema'
+import { prisma } from "@/infrastructure/db/prisma";
+import { Customer } from "@prisma/client";
+import {
+  CreateCustomerDto,
+  UpdateCustomerDto,
+} from "@/features/customers/schemas/customerSchema";
 
 /**
  * 顧客リポジトリ
@@ -11,7 +14,7 @@ export class CustomerRepository {
    * 顧客一覧取得（ページネーション対応）
    */
   async findAll(userId: string, options?: { skip?: number; take?: number }) {
-    const { skip = 0, take = 50 } = options || {}
+    const { skip = 0, take = 50 } = options || {};
 
     const [customers, total] = await Promise.all([
       prisma.customer.findMany({
@@ -20,7 +23,7 @@ export class CustomerRepository {
           deletedAt: null,
         },
         orderBy: {
-          createdAt: 'desc',
+          createdAt: "desc",
         },
         skip,
         take,
@@ -31,9 +34,9 @@ export class CustomerRepository {
           deletedAt: null,
         },
       }),
-    ])
+    ]);
 
-    return { customers, total }
+    return { customers, total };
   }
 
   /**
@@ -46,7 +49,7 @@ export class CustomerRepository {
         userId,
         deletedAt: null,
       },
-    })
+    });
   }
 
   /**
@@ -62,13 +65,17 @@ export class CustomerRepository {
         phone: data.phone || null,
         notes: data.notes || null,
       },
-    })
+    });
   }
 
   /**
    * 顧客更新
    */
-  async update(id: string, userId: string, data: UpdateCustomerDto): Promise<Customer> {
+  async update(
+    id: string,
+    userId: string,
+    data: UpdateCustomerDto
+  ): Promise<Customer> {
     return prisma.customer.update({
       where: {
         id,
@@ -82,7 +89,7 @@ export class CustomerRepository {
         notes: data.notes,
         updatedAt: new Date(),
       },
-    })
+    });
   }
 
   /**
@@ -97,7 +104,7 @@ export class CustomerRepository {
       data: {
         deletedAt: new Date(),
       },
-    })
+    });
   }
 
   /**
@@ -110,7 +117,7 @@ export class CustomerRepository {
         userId,
         deletedAt: null,
       },
-    })
+    });
   }
 
   /**
@@ -128,18 +135,21 @@ export class CustomerRepository {
         paidAmount: true,
         status: true,
       },
-    })
+    });
 
-    const totalInvoiced = invoices.reduce((sum, inv) => sum + inv.totalAmount, 0)
-    const totalPaid = invoices.reduce((sum, inv) => sum + inv.paidAmount, 0)
-    const unpaid = totalInvoiced - totalPaid
+    const totalInvoiced = invoices.reduce(
+      (sum, inv) => sum + inv.totalAmount,
+      0
+    );
+    const totalPaid = invoices.reduce((sum, inv) => sum + inv.paidAmount, 0);
+    const unpaid = totalInvoiced - totalPaid;
 
     return {
       totalInvoiced,
       totalPaid,
       unpaid,
-    }
+    };
   }
 }
 
-export const customerRepository = new CustomerRepository()
+export const customerRepository = new CustomerRepository();

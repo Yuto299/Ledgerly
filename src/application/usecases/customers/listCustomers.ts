@@ -1,4 +1,4 @@
-import { customerRepository } from '@/infrastructure/repositories/customerRepository'
+import { customerRepository } from "@/infrastructure/repositories/customerRepository";
 
 /**
  * 顧客一覧取得ユースケース
@@ -6,17 +6,17 @@ import { customerRepository } from '@/infrastructure/repositories/customerReposi
 export async function listCustomers(
   userId: string,
   options?: {
-    page?: number
-    limit?: number
+    page?: number;
+    limit?: number;
   }
 ) {
-  const { page = 1, limit = 50 } = options || {}
-  const skip = (page - 1) * limit
+  const { page = 1, limit = 50 } = options || {};
+  const skip = (page - 1) * limit;
 
   const { customers, total } = await customerRepository.findAll(userId, {
     skip,
     take: limit,
-  })
+  });
 
   return {
     customers,
@@ -26,5 +26,5 @@ export async function listCustomers(
       limit,
       totalPages: Math.ceil(total / limit),
     },
-  }
+  };
 }
