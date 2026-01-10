@@ -1,0 +1,250 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// ユーザー
+// ==========================================
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  customers         Customer[]
+  projects          Project[]
+  invoices          Invoice[]
+  expenses          Expense[]
+  expenseCategories ExpenseCategory[]
+
+  @@map("users")
+}
+
+// ==========================================
+// 顧客
+// ==========================================
+model Customer {
+  id              String   @id @default(uuid())
+  userId          String   @map("user_id")
+  name            String
+  contactName     String?  @map("contact_name")
+  email           String?
+  phone           String?
+  notes           String?
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
+
+  // Relations
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projects Project[]
+  invoices Invoice[]
+
+  @@index([userId])
+  @@index([userId, deletedAt])
+  @@map("customers")
+}
+
+// ==========================================
+// 案件
+// ==========================================
+enum ProjectStatus {
+  PROSPECT   // 見込み
+  IN_PROGRESS // 進行中
+  COMPLETED   // 完了
+  LOST        // 失注
+
+  @@map("project_status")
+}
+
+enum ContractType {
+  FIXED      // 固定報酬
+  HOURLY     // 時給
+  COMMISSION // 成果報酬
+
+  @@map("contract_type")
+}
+
+model Project {
+  id           String        @id @default(uuid())
+  userId       String        @map("user_id")
+  customerId   String        @map("customer_id")
+  name         String
+  description  String?
+  contractType ContractType  @map("contract_type")
+  contractAmount Int?        @map("contract_amount") // 契約金額（円）
+  startDate    DateTime?     @map("start_date")
+  endDate      DateTime?     @map("end_date")
+  status       ProjectStatus @default(PROSPECT)
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  deletedAt    DateTime?     @map("deleted_at")
+
+  // Relations
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  customer Customer  @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  invoices Invoice[]
+  expenses Expense[]
+
+  @@index([userId])
+  @@index([customerId])
+  @@index([userId, deletedAt])
+  @@map("projects")
+}
+
+// ==========================================
+// 請求書
+// ==========================================
+enum InvoiceStatus {
+  DRAFT // 下書き
+  SENT  // 請求済
+  PAID  // 入金済
+
+  @@map("invoice_status")
+}
+
+model Invoice {
+  id          String        @id @default(uuid())
+  userId      String        @map("user_id")
+  customerId  String        @map("customer_id")
+  projectId   String        @map("project_id")
+  invoiceNumber String?     @unique @map("invoice_number") // 請求書番号（任意）
+  status      InvoiceStatus @default(DRAFT)
+  issuedAt    DateTime      @map("issued_at") // 請求日
+  dueAt       DateTime      @map("due_at")    // 支払期限
+  totalAmount Int           @map("total_amount") // 合計金額（円）※明細から算出
+  paidAmount  Int           @default(0) @map("paid_amount") // 入金済み金額（円）※キャッシュ
+  notes       String?
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  deletedAt   DateTime?     @map("deleted_at")
+
+  // Relations
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  customer Customer      @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  project  Project       @relation(fields: [projectId], references: [id], onDelete: Restrict)
+  items    InvoiceItem[]
+  payments Payment[]
+
+  @@index([userId])
+  @@index([customerId])
+  @@index([projectId])
+  @@index([userId, status])
+  @@index([userId, issuedAt])
+  @@index([userId, deletedAt])
+  @@map("invoices")
+}
+
+// ==========================================
+// 請求明細
+// ==========================================
+model InvoiceItem {
+  id          String   @id @default(uuid())
+  invoiceId   String   @map("invoice_id")
+  name        String   // 品目名
+  description String?  // 説明
+  quantity    Int      @default(1) // 数量
+  unitPrice   Int      @map("unit_price") // 単価（円）
+  amount      Int      // 金額（円）※ quantity * unitPrice
+  sortOrder   Int      @default(0) @map("sort_order") // 表示順
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+  @@map("invoice_items")
+}
+
+// ==========================================
+// 入金
+// ==========================================
+enum PaymentMethod {
+  BANK_TRANSFER // 銀行振込
+  CREDIT_CARD   // クレジットカード
+  CASH          // 現金
+  OTHER         // その他
+
+  @@map("payment_method")
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  invoiceId     String        @map("invoice_id")
+  amount        Int           // 入金額（円）
+  paidAt        DateTime      @map("paid_at") // 入金日
+  paymentMethod PaymentMethod @map("payment_method")
+  notes         String?
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+  deletedAt     DateTime?     @map("deleted_at")
+
+  // Relations
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Restrict)
+
+  @@index([invoiceId])
+  @@index([paidAt])
+  @@map("payments")
+}
+
+// ==========================================
+// 経費カテゴリ
+// ==========================================
+model ExpenseCategory {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  name      String
+  color     String?  // 表示色（任意）
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expenses Expense[]
+
+  @@index([userId])
+  @@map("expense_categories")
+}
+
+// ==========================================
+// 経費
+// ==========================================
+model Expense {
+  id         String        @id @default(uuid())
+  userId     String        @map("user_id")
+  projectId  String?       @map("project_id") // 案件紐づけ（任意）
+  categoryId String        @map("category_id")
+  date       DateTime      // 使用日
+  amount     Int           // 金額（円）
+  paymentMethod PaymentMethod @map("payment_method")
+  description String?      // 説明
+  notes      String?
+  createdAt  DateTime      @default(now()) @map("created_at")
+  updatedAt  DateTime      @updatedAt @map("updated_at")
+  deletedAt  DateTime?     @map("deleted_at")
+
+  // Relations
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project  Project?        @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  category ExpenseCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([categoryId])
+  @@index([userId, date])
+  @@index([userId, deletedAt])
+  @@map("expenses")
+}
