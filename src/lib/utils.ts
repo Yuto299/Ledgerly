@@ -27,10 +27,18 @@ export function formatCurrency(amount: number): string {
  * @returns フォーマットされた文字列
  */
 export function formatDate(
-  date: Date | string,
+  date: Date | string | null | undefined,
   format: string = "yyyy/MM/dd"
 ): string {
+  if (!date) {
+    return "-";
+  }
+
   const d = typeof date === "string" ? new Date(date) : date;
+
+  if (isNaN(d.getTime())) {
+    return "-";
+  }
 
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, "0");

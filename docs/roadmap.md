@@ -147,83 +147,85 @@
 
 ---
 
-## Phase 4: 経費管理 🚧
+## Phase 4: 経費管理 ✅
 
-### 4.1 経費カテゴリ管理（Backend）
+### 4.1 経費カテゴリ管理（Backend）✅
 
-- [ ] ExpenseCategoryRepository
-- [ ] ExpenseCategory スキーマ（Zod）
-- [ ] Usecase 実装
-  - [ ] CreateExpenseCategory
-  - [ ] UpdateExpenseCategory
-  - [ ] DeleteExpenseCategory
-  - [ ] ListExpenseCategories
-- [ ] API Route Handlers
-  - [ ] GET /api/expense-categories
-  - [ ] POST /api/expense-categories
-  - [ ] PUT /api/expense-categories/:id
-  - [ ] DELETE /api/expense-categories/:id
+- [x] ExpenseCategoryRepository
+- [x] ExpenseCategory スキーマ（Zod）
+- [x] Usecase 実装
+  - [x] CreateExpenseCategory
+  - [x] UpdateExpenseCategory
+  - [x] DeleteExpenseCategory
+  - [x] ListExpenseCategories
+- [x] API Route Handlers
+  - [x] GET /api/expense-categories
+  - [x] POST /api/expense-categories
+  - [x] PUT /api/expense-categories/:id
+  - [x] DELETE /api/expense-categories/:id
 
-### 4.2 経費管理（Backend）
+### 4.2 経費管理（Backend）✅
 
-- [ ] ExpenseRepository
-- [ ] Expense スキーマ（Zod）
-- [ ] Usecase 実装
-  - [ ] CreateExpense
-  - [ ] UpdateExpense
-  - [ ] DeleteExpense
-  - [ ] GetExpenseById
-  - [ ] ListExpenses（フィルタ・ページネーション）
-- [ ] API Route Handlers
-  - [ ] GET /api/expenses
-  - [ ] POST /api/expenses
-  - [ ] GET /api/expenses/:id
-  - [ ] PUT /api/expenses/:id
-  - [ ] DELETE /api/expenses/:id
+- [x] ExpenseRepository
+- [x] Expense スキーマ（Zod）
+- [x] Usecase 実装
+  - [x] CreateExpense
+  - [x] UpdateExpense
+  - [x] DeleteExpense
+  - [x] GetExpenseById
+  - [x] ListExpenses（フィルタ・ページネーション）
+- [x] API Route Handlers
+  - [x] GET /api/expenses
+  - [x] POST /api/expenses
+  - [x] GET /api/expenses/:id
+  - [x] PUT /api/expenses/:id
+  - [x] DELETE /api/expenses/:id
 
-### 4.3 経費管理（Frontend）
+### 4.3 経費管理（Frontend）✅
 
-- [ ] 経費一覧画面
-- [ ] 経費作成フォーム
-- [ ] 経費編集フォーム
-- [ ] 経費カテゴリ設定画面
+- [x] 経費一覧画面
+- [x] 経費作成フォーム
+- [x] 経費編集フォーム
+- [x] 経費カテゴリ設定画面
 
 ---
 
-## Phase 5: レポート・ダッシュボード
+## Phase 5: レポート・ダッシュボード ✅
 
-### 5.1 レポート API（Backend）
+### 5.1 レポート API（Backend）✅
 
-- [ ] ReportService（集計ロジック）
-  - [ ] 月次売上集計（入金ベース / 請求ベース）
-  - [ ] 月次経費集計
-  - [ ] 利益計算
-  - [ ] 未回収金額集計
-  - [ ] 案件別集計
-  - [ ] 経費カテゴリ別集計
-- [ ] Usecase 実装
-  - [ ] GetMonthlySummary
-  - [ ] GetProjectReport
-  - [ ] GetExpenseBreakdown
-- [ ] API Route Handlers
-  - [ ] GET /api/reports/monthly?month=YYYY-MM
-  - [ ] GET /api/reports/project/:projectId
-  - [ ] GET /api/reports/expenses?month=YYYY-MM
+- [x] ReportService（集計ロジック）
+  - [x] 月次売上集計（入金ベース / 請求ベース）
+  - [x] 月次経費集計
+  - [x] 利益計算
+  - [x] 未回収金額集計
+  - [x] 案件別集計
+  - [x] 経費カテゴリ別集計
+- [x] Usecase 実装
+  - [x] GetMonthlySummary
+  - [x] GetProjectReport
+  - [x] GetExpenseBreakdown
+- [x] API Route Handlers
+  - [x] GET /api/reports/monthly?month=YYYY-MM
+  - [x] GET /api/reports/trend?months=N
+  - [x] GET /api/reports/expenses?month=YYYY-MM
+  - [x] GET /api/reports/projects?month=YYYY-MM
+  - [x] GET /api/reports/dashboard?month=YYYY-MM
 
-### 5.2 ダッシュボード（Frontend）
+### 5.2 ダッシュボード（Frontend）✅
 
-- [ ] 月次サマリカード（売上・経費・利益・未回収）
-- [ ] 月別推移グラフ（Recharts）
-  - [ ] 売上・経費・利益の折れ線グラフ
-- [ ] 経費カテゴリ別内訳（円グラフ）
-- [ ] 案件別売上ランキング（棒グラフ）
-- [ ] 最近の請求書一覧
-- [ ] 最近の経費一覧
+- [x] 月次サマリカード（売上・経費・利益・未回収）
+- [x] 月別推移グラフ（Recharts）
+  - [x] 売上・経費・利益の折れ線グラフ
+- [x] 経費カテゴリ別内訳（円グラフ）
+- [x] 案件別売上ランキング（棒グラフ）
+- [x] 最近の請求書一覧
+- [x] 最近の経費一覧
 
-### 5.3 レポート画面（Frontend）
+### 5.3 レポート画面（Frontend）✅
 
-- [ ] 月別レポート画面
-- [ ] 案件別レポート画面
+- [x] 月別レポート画面
+- [x] 案件別レポート画面
 - [ ] CSV エクスポート（将来）
 
 ---
@@ -326,9 +328,9 @@
 | Phase 1 | 100% | 完了         |
 | Phase 2 | 100% | 完了         |
 | Phase 3 | 100% | 完了         |
-| Phase 4 | 0%   | 次のステップ |
-| Phase 5 | 0%   | -            |
-| Phase 6 | 0%   | -            |
+| Phase 4 | 100% | 完了         |
+| Phase 5 | 100% | 完了         |
+| Phase 6 | 0%   | 次のステップ |
 | Phase 7 | 0%   | -            |
 
-**全体進捗: 43%**（Phase 1-3 完了）
+**全体進捗: 71%**（Phase 1-5 完了）

@@ -82,6 +82,9 @@ export default function ProjectDetailPage({
           </div>
         </div>
         <div className="flex gap-2">
+          <Link href={`/projects/${id}/reports`}>
+            <Button variant="secondary">レポート</Button>
+          </Link>
           <Link href={`/projects/${id}/edit`}>
             <Button variant="outline">編集</Button>
           </Link>

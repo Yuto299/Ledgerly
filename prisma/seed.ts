@@ -104,17 +104,70 @@ async function main() {
 
   console.log("✅ Projects created");
 
-  // 請求書作成
+  // 請求書作成（複数月のデータ）
   const invoice1 = await prisma.invoice.create({
     data: {
       userId: user.id,
       customerId: customer1.id,
       projectId: project1.id,
-      invoiceNumber: "INV-2026-001",
+      invoiceNumber: "INV-2025-11-001",
+      status: "PAID",
+      issuedAt: new Date("2025-11-01"),
+      dueAt: new Date("2025-11-30"),
+      totalAmount: 300000,
+      paidAmount: 300000,
+      items: {
+        create: [
+          {
+            name: "Webサイト設計費",
+            description: "サイト構成・デザイン設計",
+            quantity: 1,
+            unitPrice: 300000,
+            amount: 300000,
+            sortOrder: 0,
+          },
+        ],
+      },
+    },
+  });
+
+  const invoice2 = await prisma.invoice.create({
+    data: {
+      userId: user.id,
+      customerId: customer2.id,
+      projectId: project2.id,
+      invoiceNumber: "INV-2025-12-001",
+      status: "PAID",
+      issuedAt: new Date("2025-12-01"),
+      dueAt: new Date("2025-12-31"),
+      totalAmount: 100000,
+      paidAmount: 100000,
+      items: {
+        create: [
+          {
+            name: "システム保守費",
+            description: "12月分",
+            quantity: 1,
+            unitPrice: 100000,
+            amount: 100000,
+            sortOrder: 0,
+          },
+        ],
+      },
+    },
+  });
+
+  const invoice3 = await prisma.invoice.create({
+    data: {
+      userId: user.id,
+      customerId: customer1.id,
+      projectId: project1.id,
+      invoiceNumber: "INV-2026-01-001",
       status: "SENT",
       issuedAt: new Date("2026-01-05"),
       dueAt: new Date("2026-01-31"),
       totalAmount: 500000,
+      paidAmount: 250000,
       items: {
         create: [
           {
@@ -130,12 +183,58 @@ async function main() {
     },
   });
 
+  const invoice4 = await prisma.invoice.create({
+    data: {
+      userId: user.id,
+      customerId: customer2.id,
+      projectId: project2.id,
+      invoiceNumber: "INV-2026-01-002",
+      status: "PAID",
+      issuedAt: new Date("2026-01-01"),
+      dueAt: new Date("2026-01-31"),
+      totalAmount: 100000,
+      paidAmount: 100000,
+      items: {
+        create: [
+          {
+            name: "システム保守費",
+            description: "1月分",
+            quantity: 1,
+            unitPrice: 100000,
+            amount: 100000,
+            sortOrder: 0,
+          },
+        ],
+      },
+    },
+  });
+
   console.log("✅ Invoices created");
 
   // 入金作成
   await prisma.payment.create({
     data: {
       invoiceId: invoice1.id,
+      amount: 300000,
+      paidAt: new Date("2025-11-15"),
+      paymentMethod: "BANK_TRANSFER",
+      notes: "全額入金",
+    },
+  });
+
+  await prisma.payment.create({
+    data: {
+      invoiceId: invoice2.id,
+      amount: 100000,
+      paidAt: new Date("2025-12-10"),
+      paymentMethod: "BANK_TRANSFER",
+      notes: "12月分保守費",
+    },
+  });
+
+  await prisma.payment.create({
+    data: {
+      invoiceId: invoice3.id,
       amount: 250000,
       paidAt: new Date("2026-01-10"),
       paymentMethod: "BANK_TRANSFER",
@@ -143,34 +242,144 @@ async function main() {
     },
   });
 
-  // 入金額を更新
-  await prisma.invoice.update({
-    where: { id: invoice1.id },
-    data: { paidAmount: 250000 },
+  await prisma.payment.create({
+    data: {
+      invoiceId: invoice4.id,
+      amount: 100000,
+      paidAt: new Date("2026-01-08"),
+      paymentMethod: "BANK_TRANSFER",
+      notes: "1月分保守費",
+    },
   });
 
   console.log("✅ Payments created");
 
-  // 経費作成
-  const communicationCategory = await prisma.expenseCategory.findFirst({
-    where: {
+  // 経費作成（複数月・複数カテゴリ）
+  const allCategories = await prisma.expenseCategory.findMany({
+    where: { userId: user.id },
+  });
+
+  const categoryMap = new Map(allCategories.map((c) => [c.name, c.id]));
+
+  // 11月の経費
+  await prisma.expense.create({
+    data: {
       userId: user.id,
-      name: "通信費",
+      categoryId: categoryMap.get("通信費")!,
+      projectId: project1.id,
+      date: new Date("2025-11-05"),
+      amount: 5000,
+      paymentMethod: "CREDIT_CARD",
+      description: "インターネット回線（11月）",
     },
   });
 
-  if (communicationCategory) {
-    await prisma.expense.create({
-      data: {
-        userId: user.id,
-        categoryId: communicationCategory.id,
-        date: new Date("2026-01-05"),
-        amount: 5000,
-        paymentMethod: "CREDIT_CARD",
-        description: "インターネット回線",
-      },
-    });
-  }
+  await prisma.expense.create({
+    data: {
+      userId: user.id,
+      categoryId: categoryMap.get("ソフトウェア")!,
+      projectId: project1.id,
+      date: new Date("2025-11-10"),
+      amount: 15000,
+      paymentMethod: "CREDIT_CARD",
+      description: "Adobe Creative Cloud",
+    },
+  });
+
+  await prisma.expense.create({
+    data: {
+      userId: user.id,
+      categoryId: categoryMap.get("交通費")!,
+      projectId: project1.id,
+      date: new Date("2025-11-15"),
+      amount: 3000,
+      paymentMethod: "CASH",
+      description: "クライアント打ち合わせ（電車代）",
+    },
+  });
+
+  // 12月の経費
+  await prisma.expense.create({
+    data: {
+      userId: user.id,
+      categoryId: categoryMap.get("通信費")!,
+      projectId: project2.id,
+      date: new Date("2025-12-05"),
+      amount: 5000,
+      paymentMethod: "CREDIT_CARD",
+      description: "インターネット回線（12月）",
+    },
+  });
+
+  await prisma.expense.create({
+    data: {
+      userId: user.id,
+      categoryId: categoryMap.get("外注費")!,
+      projectId: project1.id,
+      date: new Date("2025-12-10"),
+      amount: 50000,
+      paymentMethod: "BANK_TRANSFER",
+      description: "ライター外注費",
+    },
+  });
+
+  await prisma.expense.create({
+    data: {
+      userId: user.id,
+      categoryId: categoryMap.get("広告費")!,
+      date: new Date("2025-12-15"),
+      amount: 30000,
+      paymentMethod: "CREDIT_CARD",
+      description: "Google広告費",
+    },
+  });
+
+  // 1月の経費
+  await prisma.expense.create({
+    data: {
+      userId: user.id,
+      categoryId: categoryMap.get("通信費")!,
+      projectId: project1.id,
+      date: new Date("2026-01-05"),
+      amount: 5000,
+      paymentMethod: "CREDIT_CARD",
+      description: "インターネット回線（1月）",
+    },
+  });
+
+  await prisma.expense.create({
+    data: {
+      userId: user.id,
+      categoryId: categoryMap.get("ソフトウェア")!,
+      date: new Date("2026-01-08"),
+      amount: 15000,
+      paymentMethod: "CREDIT_CARD",
+      description: "Adobe Creative Cloud",
+    },
+  });
+
+  await prisma.expense.create({
+    data: {
+      userId: user.id,
+      categoryId: categoryMap.get("交通費")!,
+      projectId: project1.id,
+      date: new Date("2026-01-09"),
+      amount: 8000,
+      paymentMethod: "CASH",
+      description: "クライアント打ち合わせ（タクシー代）",
+    },
+  });
+
+  await prisma.expense.create({
+    data: {
+      userId: user.id,
+      categoryId: categoryMap.get("その他")!,
+      date: new Date("2026-01-10"),
+      amount: 2000,
+      paymentMethod: "CASH",
+      description: "事務用品",
+    },
+  });
 
   console.log("✅ Expenses created");
   console.log("🎉 Seed completed!");
