@@ -49,10 +49,10 @@ export default function LoginPage() {
       <header className="backdrop-blur-sm bg-white/80 border-b border-gray-200 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">L</span>
+            <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-blue-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-base">L</span>
             </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-700 to-blue-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-700 to-blue-600 bg-clip-text text-transparent">
               Ledgerly
             </h1>
           </Link>
@@ -70,9 +70,7 @@ export default function LoginPage() {
         <div className="max-w-md w-full">
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-200 p-8 md:p-10">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900">
-                ログイン
-              </h2>
+              <h2 className="text-3xl font-bold text-gray-900">ログイン</h2>
             </div>
 
             {error && (
