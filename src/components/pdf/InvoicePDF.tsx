@@ -35,18 +35,18 @@ registerJapaneseFonts();
 
 const styles = StyleSheet.create({
   page: {
-    padding: 40,
-    fontSize: 9,
+    padding: 25,
+    fontSize: 8,
     fontFamily: "NotoSansJP",
   },
   // タイトル部分
   titleBar: {
     backgroundColor: "#2563eb",
-    padding: 10,
-    marginBottom: 20,
+    padding: 7,
+    marginBottom: 12,
   },
   titleText: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "bold",
     color: "#ffffff",
     textAlign: "center",
@@ -54,26 +54,28 @@ const styles = StyleSheet.create({
   // ヘッダー情報（日付・番号）
   headerInfo: {
     position: "absolute",
-    top: 40,
-    right: 40,
+    top: 25,
+    right: 25,
     alignItems: "flex-end",
   },
   headerRow: {
     flexDirection: "row",
-    marginBottom: 3,
+    marginBottom: 2,
   },
   headerLabel: {
-    fontSize: 9,
-    marginRight: 10,
+    fontSize: 7,
+    marginRight: 8,
+    color: "#ffffff",
   },
   headerValue: {
-    fontSize: 9,
+    fontSize: 7,
     fontWeight: "bold",
+    color: "#ffffff",
   },
   // 宛先と請求元
   infoSection: {
     flexDirection: "row",
-    marginBottom: 15,
+    marginBottom: 8,
     justifyContent: "space-between",
   },
   recipientBox: {
@@ -84,102 +86,110 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   recipientName: {
-    fontSize: 12,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  companyName: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: "bold",
     marginBottom: 3,
   },
-  infoText: {
-    fontSize: 8,
+  companyName: {
+    fontSize: 9,
+    fontWeight: "bold",
     marginBottom: 2,
+  },
+  infoText: {
+    fontSize: 7,
+    marginBottom: 1,
   },
   // 請求金額セクション
   totalAmountBox: {
     backgroundColor: "#2563eb",
-    padding: 8,
-    marginBottom: 15,
+    padding: 5,
+    marginBottom: 8,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
   totalAmountLabel: {
-    fontSize: 11,
+    fontSize: 9,
     color: "#ffffff",
     fontWeight: "bold",
   },
   totalAmountValue: {
-    fontSize: 16,
+    fontSize: 12,
     color: "#ffffff",
     fontWeight: "bold",
   },
   // 振込先情報
   bankInfoBox: {
     backgroundColor: "#2563eb",
-    padding: 6,
-    marginBottom: 5,
+    padding: 4,
+    marginBottom: 3,
   },
   bankInfoTitle: {
-    fontSize: 10,
+    fontSize: 8,
     color: "#ffffff",
     fontWeight: "bold",
   },
   bankInfoContent: {
     borderWidth: 1,
     borderColor: "#cbd5e1",
-    padding: 8,
-    marginBottom: 15,
+    padding: 5,
+    marginBottom: 8,
   },
   bankRow: {
     flexDirection: "row",
-    marginBottom: 2,
+    marginBottom: 1,
   },
   bankLabel: {
-    width: 60,
-    fontSize: 8,
+    width: 50,
+    fontSize: 7,
   },
   bankValue: {
-    fontSize: 8,
+    fontSize: 7,
   },
   // テーブル
   table: {
-    marginBottom: 10,
+    marginBottom: 5,
   },
   tableHeader: {
     flexDirection: "row",
-    backgroundColor: "#dbeafe",
-    padding: 5,
+    backgroundColor: "#2563eb",
+    padding: 4,
     fontWeight: "bold",
     fontSize: 8,
     borderWidth: 1,
-    borderColor: "#93c5fd",
+    borderColor: "#2563eb",
+  },
+  tableHeaderText: {
+    color: "#ffffff",
+    fontWeight: "bold",
   },
   tableRow: {
     flexDirection: "row",
-    padding: 5,
+    padding: 4,
     fontSize: 8,
     borderBottomWidth: 1,
     borderLeftWidth: 1,
     borderRightWidth: 1,
     borderColor: "#cbd5e1",
+    minHeight: 20,
   },
   colItem: {
-    width: "40%",
+    width: "45%",
+    paddingRight: 5,
   },
   colQty: {
     width: "12%",
     textAlign: "center",
   },
   colUnit: {
-    width: "18%",
+    width: "20%",
     textAlign: "right",
+    paddingRight: 5,
   },
   colAmount: {
-    width: "18%",
+    width: "23%",
     textAlign: "right",
+    fontWeight: "bold",
   },
   // 合計セクション
   summarySection: {
@@ -187,21 +197,21 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   summaryBox: {
-    width: 180,
+    width: 150,
   },
   summaryRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 5,
+    padding: 3,
     borderBottomWidth: 1,
     borderColor: "#cbd5e1",
   },
   summaryLabel: {
-    fontSize: 9,
+    fontSize: 7,
     fontWeight: "bold",
   },
   summaryValue: {
-    fontSize: 9,
+    fontSize: 7,
     textAlign: "right",
   },
   summaryTotal: {
@@ -211,26 +221,26 @@ const styles = StyleSheet.create({
   },
   // 備考
   notesBox: {
-    marginTop: 15,
+    marginTop: 8,
   },
   notesTitle: {
     backgroundColor: "#2563eb",
-    padding: 6,
-    marginBottom: 5,
+    padding: 4,
+    marginBottom: 3,
   },
   notesTitleText: {
-    fontSize: 10,
+    fontSize: 8,
     color: "#ffffff",
     fontWeight: "bold",
   },
   notesContent: {
     borderWidth: 1,
     borderColor: "#cbd5e1",
-    padding: 8,
-    minHeight: 40,
+    padding: 5,
+    minHeight: 30,
   },
   notesText: {
-    fontSize: 8,
+    fontSize: 7,
   },
 });
 
@@ -405,22 +415,17 @@ export const InvoicePDF = ({ invoice, settings }: InvoicePDFProps) => {
         <View style={styles.table}>
           {/* ヘッダー */}
           <View style={styles.tableHeader}>
-            <Text style={styles.colItem}>品名</Text>
-            <Text style={styles.colQty}>数量</Text>
-            <Text style={styles.colUnit}>単価</Text>
-            <Text style={styles.colAmount}>金額</Text>
+            <Text style={[styles.colItem, styles.tableHeaderText]}>品名</Text>
+            <Text style={[styles.colQty, styles.tableHeaderText]}>数量</Text>
+            <Text style={[styles.colUnit, styles.tableHeaderText]}>単価</Text>
+            <Text style={[styles.colAmount, styles.tableHeaderText]}>金額</Text>
           </View>
 
           {/* データ行 */}
           {invoice.items.map((item) => (
             <View key={item.id} style={styles.tableRow}>
               <View style={styles.colItem}>
-                <Text>{item.name}</Text>
-                {item.description && (
-                  <Text style={{ fontSize: 7, color: "#6b7280" }}>
-                    {item.description}
-                  </Text>
-                )}
+                <Text style={{ fontWeight: "bold" }}>{item.name}</Text>
               </View>
               <Text style={styles.colQty}>{item.quantity}</Text>
               <Text style={styles.colUnit}>
