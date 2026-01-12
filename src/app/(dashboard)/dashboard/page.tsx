@@ -249,13 +249,14 @@ export default function DashboardPage() {
           <ResponsiveContainer width="100%" height={250}>
             <LineChart
               data={trend}
-              margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
+              margin={{ top: 5, right: 20, left: -20, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" tick={{ fontSize: 12 }} />
               <YAxis
                 tickFormatter={(value) => `¥${(value / 1000).toFixed(0)}k`}
                 tick={{ fontSize: 12 }}
+                width={60}
               />
               <Tooltip formatter={(value: number) => formatCurrency(value)} />
               <Legend />
@@ -290,11 +291,7 @@ export default function DashboardPage() {
             経費カテゴリ別内訳
           </h2>
           {expenseBreakdown.length > 0 ? (
-            <ResponsiveContainer
-              width="100%"
-              height={250}
-              className="md:h-[300px]"
-            >
+            <ResponsiveContainer width="100%" height={250}>
               <PieChart>
                 <Pie
                   data={expenseBreakdown}
@@ -302,7 +299,7 @@ export default function DashboardPage() {
                   nameKey="categoryName"
                   cx="50%"
                   cy="50%"
-                  outerRadius={80}
+                  outerRadius={70}
                   label={(entry) => {
                     const percent = (
                       (entry.amount /
@@ -341,16 +338,16 @@ export default function DashboardPage() {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={projectSales.slice(0, 5)}
-                margin={{ top: 20, right: 30, left: 10, bottom: 25 }}
+                margin={{ top: 20, right: 30, left: 10, bottom: 50 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                 <XAxis
                   dataKey="projectName"
-                  angle={0}
-                  textAnchor="middle"
-                  height={80}
+                  angle={-45}
+                  textAnchor="end"
+                  height={100}
                   interval={0}
-                  tick={{ fontSize: 14 }}
+                  tick={{ fontSize: 12 }}
                   style={{ fontWeight: 500 }}
                 />
                 <YAxis

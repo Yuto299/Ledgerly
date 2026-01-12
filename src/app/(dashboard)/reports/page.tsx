@@ -281,16 +281,16 @@ export default function ReportsPage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={projectSales.slice(0, 5)}
-                    margin={{ top: 20, right: 30, left: 10, bottom: 25 }}
+                    margin={{ top: 20, right: 30, left: 10, bottom: 50 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis
                       dataKey="projectName"
-                      angle={0}
-                      textAnchor="middle"
-                      height={80}
+                      angle={-45}
+                      textAnchor="end"
+                      height={100}
                       interval={0}
-                      tick={{ fontSize: 14 }}
+                      tick={{ fontSize: 12 }}
                       style={{ fontWeight: 500 }}
                     />
                     <YAxis

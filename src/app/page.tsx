@@ -8,10 +8,12 @@ export default function Home() {
       <header className="backdrop-blur-sm bg-white/80 border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-base">L</span>
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-slate-600 to-blue-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm sm:text-base">
+                L
+              </span>
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-700 to-blue-600 bg-clip-text text-transparent">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-slate-700 to-blue-600 bg-clip-text text-transparent">
               Ledgerly
             </h1>
           </Link>
@@ -38,23 +40,23 @@ export default function Home() {
                 フリーランス・個人事業主向け
               </span>
             </div>
-            <h2 className="text-6xl md:text-7xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 mb-6 leading-tight">
               会計管理を
               <br />
               <span className="bg-gradient-to-r from-slate-600 via-blue-600 to-slate-600 bg-clip-text text-transparent">
                 もっとシンプルに
               </span>
             </h2>
-            <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
               請求書作成から経費管理、売上分析まで。
-              <br />
+              <br className="hidden sm:block" />
               <span className="font-semibold text-gray-700">
                 フリーランスの会計業務を一つに
               </span>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link href="/signup">
-                <Button className="text-lg px-10 py-4 bg-gradient-to-r from-slate-600 to-blue-600 hover:from-slate-700 hover:to-blue-700 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200">
+              <Link href="/signup" className="w-full sm:w-auto">
+                <Button className="w-full sm:w-auto text-base sm:text-lg px-8 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-slate-600 to-blue-600 hover:from-slate-700 hover:to-blue-700 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200">
                   今すぐ無料で始める
                   <svg
                     className="w-5 h-5 ml-2 inline"
@@ -90,23 +92,29 @@ export default function Home() {
                   Ledgerly Dashboard
                 </span>
               </div>
-              <div className="p-8 bg-gradient-to-br from-white to-gray-50">
-                <div className="grid grid-cols-3 gap-4 mb-6">
-                  <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                    <div className="text-sm text-gray-600 mb-1">今月の売上</div>
-                    <div className="text-2xl font-bold text-slate-700">
+              <div className="p-4 sm:p-6 md:p-8 bg-gradient-to-br from-white to-gray-50">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
+                  <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200">
+                    <div className="text-xs sm:text-sm text-gray-600 mb-1">
+                      今月の売上
+                    </div>
+                    <div className="text-xl sm:text-2xl font-bold text-slate-700">
                       ¥850,000
                     </div>
                   </div>
-                  <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                    <div className="text-sm text-gray-600 mb-1">今月の経費</div>
-                    <div className="text-2xl font-bold text-slate-700">
+                  <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200">
+                    <div className="text-xs sm:text-sm text-gray-600 mb-1">
+                      今月の経費
+                    </div>
+                    <div className="text-xl sm:text-2xl font-bold text-slate-700">
                       ¥120,000
                     </div>
                   </div>
-                  <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                    <div className="text-sm text-gray-600 mb-1">利益</div>
-                    <div className="text-2xl font-bold text-blue-600">
+                  <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200">
+                    <div className="text-xs sm:text-sm text-gray-600 mb-1">
+                      利益
+                    </div>
+                    <div className="text-xl sm:text-2xl font-bold text-blue-600">
                       ¥730,000
                     </div>
                   </div>
@@ -143,10 +151,10 @@ export default function Home() {
       <section className="py-24 px-4 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               必要な機能を、すべて
             </h3>
-            <p className="text-xl text-gray-600">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600">
               会計業務に必要な機能を厳選して搭載
             </p>
           </div>
@@ -321,10 +329,10 @@ export default function Home() {
       <section className="py-24 px-4 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               なぜLedgerlyなのか
             </h3>
-            <p className="text-xl text-gray-600">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600">
               フリーランスのために設計された3つの理由
             </p>
           </div>
@@ -376,14 +384,14 @@ export default function Home() {
           <div className="absolute bottom-10 right-10 w-96 h-96 bg-white rounded-full blur-3xl"></div>
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <h3 className="text-4xl md:text-5xl font-bold mb-6">
+          <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
             今すぐ始めませんか？
           </h3>
-          <p className="text-xl mb-10 opacity-90">
+          <p className="text-base sm:text-lg md:text-xl mb-10 opacity-90">
             アカウント作成は30秒。今日から会計業務を効率化できます。
           </p>
-          <Link href="/signup">
-            <Button className="text-lg px-12 py-5 bg-white text-slate-700 hover:bg-gray-100 shadow-2xl hover:scale-110 transition-all duration-200 font-bold">
+          <Link href="/signup" className="inline-block w-full sm:w-auto">
+            <Button className="w-full sm:w-auto text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-5 bg-white text-slate-700 hover:bg-gray-100 shadow-2xl hover:scale-110 transition-all duration-200 font-bold">
               無料で始める
               <svg
                 className="w-6 h-6 ml-2 inline"
