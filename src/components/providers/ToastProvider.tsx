@@ -86,64 +86,24 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
 
   const icons = {
     success: (
-      <svg
-        className="h-5 w-5 text-green-500"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M5 13l4 4L19 7"
-        />
-      </svg>
+      <span className="material-symbols-outlined text-green-500 text-[20px]">
+        check_circle
+      </span>
     ),
     error: (
-      <svg
-        className="h-5 w-5 text-red-500"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M6 18L18 6M6 6l12 12"
-        />
-      </svg>
+      <span className="material-symbols-outlined text-red-500 text-[20px]">
+        cancel
+      </span>
     ),
     warning: (
-      <svg
-        className="h-5 w-5 text-yellow-500"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-        />
-      </svg>
+      <span className="material-symbols-outlined text-yellow-500 text-[20px]">
+        warning
+      </span>
     ),
     info: (
-      <svg
-        className="h-5 w-5 text-blue-500"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
+      <span className="material-symbols-outlined text-blue-500 text-[20px]">
+        info
+      </span>
     ),
   };
 
@@ -163,19 +123,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
         className="ml-3 flex-shrink-0 inline-flex text-gray-400 hover:text-gray-500 focus:outline-none"
       >
         <span className="sr-only">閉じる</span>
-        <svg
-          className="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
+        <span className="material-symbols-outlined text-[20px]">close</span>
       </button>
     </div>
   );

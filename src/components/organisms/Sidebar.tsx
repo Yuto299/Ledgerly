@@ -5,14 +5,14 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const navigation = [
-  { name: "ダッシュボード", href: "/dashboard", icon: "📊" },
-  { name: "顧客", href: "/customers", icon: "👥" },
-  { name: "案件", href: "/projects", icon: "📁" },
-  { name: "請求書", href: "/invoices", icon: "📄" },
-  { name: "経費", href: "/expenses", icon: "💳" },
-  { name: "経費カテゴリ", href: "/expense-categories", icon: "🏷️" },
-  { name: "レポート", href: "/reports", icon: "📈" },
-  { name: "設定", href: "/settings", icon: "⚙️" },
+  { name: "ダッシュボード", href: "/dashboard", icon: "dashboard" },
+  { name: "顧客", href: "/customers", icon: "group" },
+  { name: "案件", href: "/projects", icon: "folder" },
+  { name: "請求書", href: "/invoices", icon: "description" },
+  { name: "経費", href: "/expenses", icon: "credit_card" },
+  { name: "経費カテゴリ", href: "/expense-categories", icon: "label" },
+  { name: "レポート", href: "/reports", icon: "trending_up" },
+  { name: "設定", href: "/settings", icon: "settings" },
 ];
 
 export default function Sidebar() {
@@ -27,7 +27,9 @@ export default function Sidebar() {
         className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-900 text-white"
         aria-label="メニュー"
       >
-        {isMobileMenuOpen ? "✕" : "☰"}
+        <span className="material-symbols-outlined text-[24px]">
+          {isMobileMenuOpen ? "close" : "menu"}
+        </span>
       </button>
 
       {/* オーバーレイ */}
@@ -68,7 +70,9 @@ export default function Sidebar() {
                     : "text-gray-300 hover:bg-gray-800 hover:text-white"
                 }`}
               >
-                <span className="mr-3 text-lg">{item.icon}</span>
+                <span className="material-symbols-outlined mr-3 text-[20px]">
+                  {item.icon}
+                </span>
                 {item.name}
               </Link>
             );

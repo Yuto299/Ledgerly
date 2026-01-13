@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Pencil, Trash2 } from "lucide-react";
 import Button from "@/components/atoms/Button";
 import Card from "@/components/atoms/Card";
 import Badge from "@/components/atoms/Badge";
@@ -95,7 +94,9 @@ export default function ExpenseCategoriesPage() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">経費カテゴリ</h1>
         <Button onClick={() => handleOpenModal()}>
-          <Plus className="w-4 h-4 mr-2" />
+          <span className="material-symbols-outlined text-[18px] mr-2">
+            add
+          </span>
           新規カテゴリ
         </Button>
       </div>
@@ -104,7 +105,9 @@ export default function ExpenseCategoriesPage() {
         <Card className="p-8 text-center">
           <p className="text-gray-500 mb-4">まだカテゴリが登録されていません</p>
           <Button onClick={() => handleOpenModal()}>
-            <Plus className="w-4 h-4 mr-2" />
+            <span className="material-symbols-outlined text-[18px] mr-2">
+              add
+            </span>
             最初のカテゴリを作成
           </Button>
         </Card>
@@ -132,14 +135,18 @@ export default function ExpenseCategoriesPage() {
                     size="sm"
                     onClick={() => handleOpenModal(category)}
                   >
-                    <Pencil className="w-4 h-4" />
+                    <span className="material-symbols-outlined text-[18px]">
+                      edit
+                    </span>
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => handleDelete(category.id)}
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <span className="material-symbols-outlined text-[18px]">
+                      delete
+                    </span>
                   </Button>
                 </div>
               </div>
