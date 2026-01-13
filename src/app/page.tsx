@@ -1,13 +1,21 @@
 import Link from "next/link";
 import Button from "@/components/atoms/Button";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Ledgerly - フリーランス向けシンプル会計管理",
+  description:
+    "請求書作成から経費管理、売上分析まで。フリーランス・個人事業主のための会計管理システム。無料プランで今すぐ始められます。",
+  keywords: "フリーランス,会計管理,請求書作成,経費管理,個人事業主",
+};
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50">
       {/* Header */}
       <header className="backdrop-blur-sm bg-white/80 border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between" aria-label="メインナビゲーション">
+          <Link href="/" className="flex items-center gap-2" aria-label="Ledgerlyホーム">
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-slate-600 to-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm sm:text-base">
                 L
@@ -18,11 +26,11 @@ export default function Home() {
             </h1>
           </Link>
           <Link href="/login">
-            <Button className="bg-slate-600 hover:bg-slate-700 shadow-md">
+            <Button className="bg-slate-600 hover:bg-slate-700 shadow-md" aria-label="ログインページへ">
               ログイン
             </Button>
           </Link>
-        </div>
+        </nav>
       </header>
 
       {/* Hero Section */}
@@ -35,28 +43,31 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
-            <div className="inline-block mb-6">
+            <div className="inline-block mb-8 animate-fade-in">
               <span className="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
                 フリーランス・個人事業主向け
               </span>
             </div>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 mb-8 leading-tight tracking-tight">
               会計管理を
               <br />
               <span className="bg-gradient-to-r from-slate-600 via-blue-600 to-slate-600 bg-clip-text text-transparent">
                 もっとシンプルに
               </span>
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed tracking-normal">
               請求書作成から経費管理、売上分析まで。
               <br className="hidden sm:block" />
-              <span className="font-semibold text-gray-700">
-                フリーランスの会計業務を一つに
+              <span className="font-semibold text-gray-800">
+                フリーランスの会計業務を一つのツールで完結
               </span>
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
               <Link href="/signup" className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto text-base sm:text-lg px-8 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-slate-600 to-blue-600 hover:from-slate-700 hover:to-blue-700 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200">
+                <Button 
+                  className="w-full sm:w-auto text-base sm:text-lg px-8 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-slate-600 to-blue-600 hover:from-slate-700 hover:to-blue-700 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200"
+                  aria-label="無料で会員登録を始める"
+                >
                   今すぐ無料で始める
                   <svg
                     className="w-5 h-5 ml-2 inline"
@@ -148,20 +159,20 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="py-24 px-4 bg-white">
+      <section className="py-24 px-4 bg-white" aria-labelledby="features-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 id="features-heading" className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight tracking-tight">
               必要な機能を、すべて
-            </h3>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600">
-              会計業務に必要な機能を厳選して搭載
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
+              フリーランスの会計業務に必要な機能を厳選
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="group bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg border border-gray-200 p-8 hover:shadow-2xl hover:scale-105 transition-all duration-300">
-              <div className="bg-gradient-to-br from-slate-600 to-blue-600 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <div className="bg-gradient-to-br from-slate-600 to-blue-600 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform" aria-hidden="true">
                 <svg
                   className="w-8 h-8 text-white"
                   fill="none"
@@ -176,16 +187,16 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 leading-tight tracking-tight">
                 請求書作成
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 leading-relaxed mb-4">
                 プロフェッショナルな請求書を数クリックで作成。PDF出力で即送付可能。
               </p>
-              <ul className="mt-4 space-y-2">
-                <li className="flex items-center text-sm text-gray-600">
+              <ul className="mt-4 space-y-2.5">
+                <li className="flex items-center text-sm text-gray-600 leading-relaxed">
                   <svg
-                    className="w-4 h-4 mr-2 text-blue-600"
+                    className="w-4 h-4 mr-2 text-blue-600 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -197,9 +208,9 @@ export default function Home() {
                   </svg>
                   PDF自動生成
                 </li>
-                <li className="flex items-center text-sm text-gray-600">
+                <li className="flex items-center text-sm text-gray-600 leading-relaxed">
                   <svg
-                    className="w-4 h-4 mr-2 text-blue-600"
+                    className="w-4 h-4 mr-2 text-blue-600 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -230,16 +241,16 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              <h3 className="text-2xl font-bold text-gray-900 mb-3 leading-tight tracking-tight">
                 経費管理
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 leading-relaxed mb-4">
                 カテゴリ別・案件別に経費を記録。確定申告の準備もスムーズに。
               </p>
-              <ul className="mt-4 space-y-2">
-                <li className="flex items-center text-sm text-gray-600">
+              <ul className="mt-4 space-y-2.5">
+                <li className="flex items-center text-sm text-gray-600 leading-relaxed">
                   <svg
-                    className="w-4 h-4 mr-2 text-blue-600"
+                    className="w-4 h-4 mr-2 text-blue-600 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -251,9 +262,9 @@ export default function Home() {
                   </svg>
                   カテゴリ分類
                 </li>
-                <li className="flex items-center text-sm text-gray-600">
+                <li className="flex items-center text-sm text-gray-600 leading-relaxed">
                   <svg
-                    className="w-4 h-4 mr-2 text-blue-600"
+                    className="w-4 h-4 mr-2 text-blue-600 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -284,16 +295,16 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              <h3 className="text-2xl font-bold text-gray-900 mb-3 leading-tight tracking-tight">
                 売上分析
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 leading-relaxed mb-4">
                 月別・案件別の売上をグラフで可視化。ビジネスの状況を一目で把握。
               </p>
-              <ul className="mt-4 space-y-2">
-                <li className="flex items-center text-sm text-gray-600">
+              <ul className="mt-4 space-y-2.5">
+                <li className="flex items-center text-sm text-gray-600 leading-relaxed">
                   <svg
-                    className="w-4 h-4 mr-2 text-blue-600"
+                    className="w-4 h-4 mr-2 text-blue-600 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -305,9 +316,9 @@ export default function Home() {
                   </svg>
                   売上推移グラフ
                 </li>
-                <li className="flex items-center text-sm text-gray-600">
+                <li className="flex items-center text-sm text-gray-600 leading-relaxed">
                   <svg
-                    className="w-4 h-4 mr-2 text-blue-600"
+                    className="w-4 h-4 mr-2 text-blue-600 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -326,13 +337,13 @@ export default function Home() {
       </section>
 
       {/* Benefits */}
-      <section className="py-24 px-4 bg-gradient-to-br from-slate-50 to-blue-50">
+      <section className="py-24 px-4 bg-gradient-to-br from-slate-50 to-blue-50" aria-labelledby="benefits-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 id="benefits-heading" className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight tracking-tight">
               なぜLedgerlyなのか
-            </h3>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600">
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
               フリーランスのために設計された3つの理由
             </p>
           </div>
@@ -342,7 +353,7 @@ export default function Home() {
               <div className="bg-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <span className="text-4xl">⚡</span>
               </div>
-              <h4 className="text-2xl font-bold text-gray-900 mb-3">
+              <h4 className="text-2xl font-bold text-gray-900 mb-3 leading-tight tracking-tight">
                 即座に使える
               </h4>
               <p className="text-gray-600 leading-relaxed">
@@ -354,7 +365,7 @@ export default function Home() {
               <div className="bg-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <span className="text-4xl">🎯</span>
               </div>
-              <h4 className="text-2xl font-bold text-gray-900 mb-3">
+              <h4 className="text-2xl font-bold text-gray-900 mb-3 leading-tight tracking-tight">
                 シンプル設計
               </h4>
               <p className="text-gray-600 leading-relaxed">
@@ -366,7 +377,7 @@ export default function Home() {
               <div className="bg-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <span className="text-4xl">�</span>
               </div>
-              <h4 className="text-2xl font-bold text-gray-900 mb-3">
+              <h4 className="text-2xl font-bold text-gray-900 mb-3 leading-tight tracking-tight">
                 柔軟なプラン
               </h4>
               <p className="text-gray-600 leading-relaxed">
@@ -378,7 +389,7 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section className="py-24 px-4 bg-white">
+      <section className="py-24 px-4 bg-white" aria-labelledby="pricing-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="inline-block mb-6">
@@ -386,31 +397,31 @@ export default function Home() {
                 シンプルな料金プラン
               </span>
             </div>
-            <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 id="pricing-heading" className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight tracking-tight">
               あなたに合ったプランを
-            </h3>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600">
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
               まずは無料で始めて、成長に合わせてアップグレード
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Free Plan */}
-            <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg border-2 border-gray-200 p-8 hover:shadow-2xl transition-all duration-300">
+            <article className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg border-2 border-gray-200 p-8 hover:shadow-2xl transition-all duration-300">
               <div className="text-center mb-8">
-                <h4 className="text-2xl font-bold text-gray-900 mb-2">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2 leading-tight tracking-tight">
                   フリープラン
-                </h4>
+                </h3>
                 <div className="flex items-end justify-center gap-2 mb-4">
-                  <span className="text-5xl font-extrabold text-gray-900">
+                  <span className="text-5xl font-extrabold text-gray-900 leading-none tracking-tight">
                     ¥0
                   </span>
-                  <span className="text-gray-600 mb-2">/月</span>
+                  <span className="text-gray-600 mb-2 leading-relaxed">/月</span>
                 </div>
-                <p className="text-gray-600">個人事業を始めたばかりの方に</p>
+                <p className="text-gray-600 leading-relaxed">個人事業を始めたばかりの方に</p>
               </div>
 
-              <ul className="space-y-4 mb-8">
+              <ul className="space-y-3.5 mb-8">
                 <li className="flex items-start">
                   <svg
                     className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-0.5"
@@ -486,36 +497,36 @@ export default function Home() {
               </ul>
 
               <Link href="/signup" className="block">
-                <Button className="w-full py-3 bg-gray-700 hover:bg-gray-800">
+                <Button className="w-full py-3 bg-gray-700 hover:bg-gray-800" aria-label="フリープランで無料登録">
                   無料で始める
                 </Button>
               </Link>
-            </div>
+            </article>
 
             {/* Premium Plan */}
-            <div className="bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl shadow-2xl border-2 border-blue-500 p-8 relative hover:scale-105 transition-all duration-300">
+            <article className="bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl shadow-2xl border-2 border-blue-500 p-8 relative hover:scale-105 transition-all duration-300">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-gradient-to-r from-blue-600 to-slate-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                <span className="bg-gradient-to-r from-blue-600 to-slate-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg" aria-label="おすすめプラン">
                   おすすめ
                 </span>
               </div>
 
               <div className="text-center mb-8">
-                <h4 className="text-2xl font-bold text-gray-900 mb-2">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2 leading-tight tracking-tight">
                   プレミアムプラン
-                </h4>
+                </h3>
                 <div className="flex items-end justify-center gap-2 mb-4">
-                  <span className="text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-slate-600 bg-clip-text text-transparent">
+                  <span className="text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-slate-600 bg-clip-text text-transparent leading-none tracking-tight">
                     ¥980
                   </span>
-                  <span className="text-gray-600 mb-2">/月</span>
+                  <span className="text-gray-600 mb-2 leading-relaxed">/月</span>
                 </div>
-                <p className="text-gray-600">
+                <p className="text-gray-600 leading-relaxed">
                   本格的にビジネスを成長させたい方に
                 </p>
               </div>
 
-              <ul className="space-y-4 mb-8">
+              <ul className="space-y-3.5 mb-8">
                 <li className="flex items-start">
                   <svg
                     className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-0.5"
@@ -615,11 +626,11 @@ export default function Home() {
               </ul>
 
               <Link href="/signup" className="block">
-                <Button className="w-full py-3 bg-gradient-to-r from-blue-600 to-slate-600 hover:from-blue-700 hover:to-slate-700 shadow-lg">
+                <Button className="w-full py-3 bg-gradient-to-r from-blue-600 to-slate-600 hover:from-blue-700 hover:to-slate-700 shadow-lg" aria-label="プレミアムプランで登録">
                   プレミアムを始める
                 </Button>
               </Link>
-            </div>
+            </article>
           </div>
 
           <div className="mt-12 text-center">
@@ -635,20 +646,23 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 px-4 bg-gradient-to-r from-slate-700 via-blue-700 to-slate-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
+      <section className="py-24 px-4 bg-gradient-to-r from-slate-700 via-blue-700 to-slate-700 text-white relative overflow-hidden" aria-labelledby="cta-heading">
+        <div className="absolute inset-0 opacity-10" aria-hidden="true">
           <div className="absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 right-10 w-96 h-96 bg-white rounded-full blur-3xl"></div>
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+          <h2 id="cta-heading" className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight tracking-tight">
             今すぐ始めませんか？
-          </h3>
-          <p className="text-base sm:text-lg md:text-xl mb-10 opacity-90">
-            アカウント作成は30秒。今日から会計業務を効率化できます。
+          </h2>
+          <p className="text-base sm:text-lg md:text-xl mb-10 opacity-90 leading-relaxed">
+            アカウント作成は30秒。今日から会計業務を効率化。
           </p>
           <Link href="/signup" className="inline-block w-full sm:w-auto">
-            <Button className="w-full sm:w-auto text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-5 bg-white text-slate-700 hover:bg-gray-100 shadow-2xl hover:scale-110 transition-all duration-200 font-bold">
+            <Button 
+              className="w-full sm:w-auto text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-5 bg-white text-slate-700 hover:bg-gray-100 shadow-2xl hover:scale-110 transition-all duration-200 font-bold"
+              aria-label="無料で会員登録を開始"
+            >
               無料で始める
               <svg
                 className="w-6 h-6 ml-2 inline"
@@ -672,12 +686,12 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-4 bg-gray-900 text-gray-400">
+      <footer className="py-12 px-4 bg-gray-900 text-gray-400" aria-label="フッター">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-6 md:mb-0">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-blue-600 rounded-lg flex items-center justify-center">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="text-center md:text-left">
+              <div className="flex items-center gap-2 mb-2 justify-center md:justify-start">
+                <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-blue-600 rounded-lg flex items-center justify-center" aria-hidden="true">
                   <span className="text-white font-bold text-sm">L</span>
                 </div>
                 <span className="text-xl font-bold text-white">Ledgerly</span>
@@ -688,13 +702,13 @@ export default function Home() {
               <p className="text-sm">
                 &copy; 2026 Ledgerly. All rights reserved.
               </p>
-              <p className="text-xs mt-2">
+              <p className="text-xs mt-2 text-gray-500">
                 個人事業主・フリーランス向け会計管理システム
               </p>
             </div>
           </div>
         </div>
       </footer>
-    </div>
+    </main>
   );
 }
