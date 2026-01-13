@@ -74,7 +74,7 @@ export default function Home() {
                 </Button>
               </Link>
               <span className="text-sm text-gray-500">
-                クレジットカード不要・即座に利用開始
+                無料プランはクレジットカード不要
               </span>
             </div>
           </div>
@@ -364,15 +364,272 @@ export default function Home() {
 
             <div className="text-center">
               <div className="bg-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <span className="text-4xl">💰</span>
+                <span className="text-4xl">�</span>
               </div>
               <h4 className="text-2xl font-bold text-gray-900 mb-3">
-                完全無料
+                柔軟なプラン
               </h4>
               <p className="text-gray-600 leading-relaxed">
-                すべての機能を無料で利用可能。隠れたコストは一切ありません。
+                無料プランから始めて、必要に応じてアップグレード可能。
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section className="py-24 px-4 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="inline-block mb-6">
+              <span className="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
+                シンプルな料金プラン
+              </span>
+            </div>
+            <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              あなたに合ったプランを
+            </h3>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600">
+              まずは無料で始めて、成長に合わせてアップグレード
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Free Plan */}
+            <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg border-2 border-gray-200 p-8 hover:shadow-2xl transition-all duration-300">
+              <div className="text-center mb-8">
+                <h4 className="text-2xl font-bold text-gray-900 mb-2">
+                  フリープラン
+                </h4>
+                <div className="flex items-end justify-center gap-2 mb-4">
+                  <span className="text-5xl font-extrabold text-gray-900">
+                    ¥0
+                  </span>
+                  <span className="text-gray-600 mb-2">/月</span>
+                </div>
+                <p className="text-gray-600">個人事業を始めたばかりの方に</p>
+              </div>
+
+              <ul className="space-y-4 mb-8">
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-700">
+                    請求書作成（月10件まで）
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-700">基本的な経費管理</span>
+                </li>
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-700">顧客管理（50件まで）</span>
+                </li>
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-700">基本的なレポート</span>
+                </li>
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-700">PDF出力</span>
+                </li>
+              </ul>
+
+              <Link href="/signup" className="block">
+                <Button className="w-full py-3 bg-gray-700 hover:bg-gray-800">
+                  無料で始める
+                </Button>
+              </Link>
+            </div>
+
+            {/* Premium Plan */}
+            <div className="bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl shadow-2xl border-2 border-blue-500 p-8 relative hover:scale-105 transition-all duration-300">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <span className="bg-gradient-to-r from-blue-600 to-slate-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                  おすすめ
+                </span>
+              </div>
+
+              <div className="text-center mb-8">
+                <h4 className="text-2xl font-bold text-gray-900 mb-2">
+                  プレミアムプラン
+                </h4>
+                <div className="flex items-end justify-center gap-2 mb-4">
+                  <span className="text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-slate-600 bg-clip-text text-transparent">
+                    ¥980
+                  </span>
+                  <span className="text-gray-600 mb-2">/月</span>
+                </div>
+                <p className="text-gray-600">
+                  本格的にビジネスを成長させたい方に
+                </p>
+              </div>
+
+              <ul className="space-y-4 mb-8">
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-700 font-semibold">
+                    請求書作成（無制限）
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-700 font-semibold">
+                    高度な経費管理・分析
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-700 font-semibold">
+                    顧客管理（無制限）
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-700 font-semibold">
+                    詳細なレポート・分析
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-700 font-semibold">
+                    CSV一括インポート
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-700 font-semibold">
+                    優先サポート
+                  </span>
+                </li>
+              </ul>
+
+              <Link href="/signup" className="block">
+                <Button className="w-full py-3 bg-gradient-to-r from-blue-600 to-slate-600 hover:from-blue-700 hover:to-slate-700 shadow-lg">
+                  プレミアムを始める
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          <div className="mt-12 text-center">
+            <p className="text-gray-600 text-sm">
+              すべてのプランで{" "}
+              <span className="font-semibold">14日間の返金保証</span> 付き
+            </p>
+            <p className="text-gray-500 text-xs mt-2">
+              お支払いはクレジットカードで簡単・安全に処理されます
+            </p>
           </div>
         </div>
       </section>
@@ -409,7 +666,7 @@ export default function Home() {
             </Button>
           </Link>
           <p className="mt-6 text-sm opacity-75">
-            クレジットカード不要 • 解約自由 • データ安全管理
+            まずは無料で試せる • 解約自由 • データ安全管理
           </p>
         </div>
       </section>
