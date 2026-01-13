@@ -200,13 +200,6 @@ export default function SignupPage() {
               </p>
             </div>
           </div>
-
-          {/* 追加情報 */}
-          <div className="mt-4 text-center">
-            <p className="text-sm text-gray-600">
-              フリーランス・個人事業主向けの会計管理システム
-            </p>
-          </div>
         </div>
       </div>
     </div>

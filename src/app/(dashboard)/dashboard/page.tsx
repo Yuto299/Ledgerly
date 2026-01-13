@@ -392,11 +392,11 @@ export default function DashboardPage() {
           案件別売上ランキング
         </h2>
         {projectSales.length > 0 ? (
-          <div className="w-full" style={{ height: 450 }}>
+          <div className="w-full" style={{ height: 500 }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={projectSales.slice(0, 5)}
-                margin={{ top: 20, right: 30, left: 10, bottom: 50 }}
+                margin={{ top: 60, right: 30, left: 10, bottom: 40 }}
               >
                 <defs>
                   <linearGradient
@@ -423,12 +423,12 @@ export default function DashboardPage() {
                   dataKey="projectName"
                   angle={0}
                   textAnchor="middle"
-                  height={100}
                   interval={0}
-                  tick={{ fontSize: 12, fill: "#6b7280" }}
+                  tick={{ fontSize: 12, fill: "#6b7280", dy: 10 }}
                   style={{ fontWeight: 500 }}
                   axisLine={{ stroke: "#e5e7eb" }}
                   tickLine={{ stroke: "#e5e7eb" }}
+                  padding={{ left: 10, right: 10 }}
                 />
                 <YAxis
                   tickFormatter={(value) => `¥${(value / 1000).toFixed(0)}k`}
@@ -450,9 +450,9 @@ export default function DashboardPage() {
                   }}
                 />
                 <Legend
-                  verticalAlign="bottom"
-                  height={36}
-                  wrapperStyle={{ paddingTop: "5px", fontSize: "13px" }}
+                  verticalAlign="top"
+                  align="right"
+                  wrapperStyle={{ fontSize: "13px", marginTop: "-10px" }}
                   iconType="circle"
                   iconSize={10}
                 />
