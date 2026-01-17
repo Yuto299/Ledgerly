@@ -24,8 +24,9 @@ export default function Sidebar() {
       {/* モバイルメニューボタン */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-900 text-white"
+        className="lg:hidden fixed top-3 left-3 z-50 p-2.5 rounded-lg bg-gray-900 text-white shadow-lg hover:bg-gray-800 transition-colors"
         aria-label="メニュー"
+        aria-expanded={isMobileMenuOpen}
       >
         <span className="material-symbols-outlined text-[24px]">
           {isMobileMenuOpen ? "close" : "menu"}
@@ -44,7 +45,7 @@ export default function Sidebar() {
       <div
         className={`
           fixed lg:static inset-y-0 left-0 z-40
-          w-64 bg-gray-900 text-white transform transition-transform duration-300
+          w-64 bg-gray-900 text-white transform transition-transform duration-300 ease-in-out
           ${
             isMobileMenuOpen
               ? "translate-x-0"
@@ -52,10 +53,10 @@ export default function Sidebar() {
           }
         `}
       >
-        <div className="p-6">
-          <h1 className="text-2xl font-bold">Ledgerly</h1>
+        <div className="p-4 sm:p-6">
+          <h1 className="text-xl sm:text-2xl font-bold">Ledgerly</h1>
         </div>
-        <nav className="mt-6">
+        <nav className="mt-4 sm:mt-6">
           {navigation.map((item) => {
             const isActive =
               pathname === item.href || pathname?.startsWith(item.href + "/");
@@ -64,13 +65,13 @@ export default function Sidebar() {
                 key={item.name}
                 href={item.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`flex items-center px-6 py-3 text-sm font-medium transition-colors ${
+                className={`flex items-center px-4 sm:px-6 py-2.5 sm:py-3 text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-gray-800 text-white border-l-4 border-primary-500"
+                    ? "bg-gray-800 text-white border-l-4 border-blue-500"
                     : "text-gray-300 hover:bg-gray-800 hover:text-white"
                 }`}
               >
-                <span className="material-symbols-outlined mr-3 text-[20px]">
+                <span className="material-symbols-outlined mr-3 text-[18px] sm:text-[20px]">
                   {item.icon}
                 </span>
                 {item.name}
