@@ -73,7 +73,12 @@ export async function POST(req: NextRequest) {
     });
 
     // デフォルトの経費カテゴリを作成
-    await createDefaultExpenseCategories(user.id);
+    try {
+      await createDefaultExpenseCategories(user.id);
+    } catch (categoryError) {
+      // 経費カテゴリの作成に失敗してもユーザー登録は成功とする
+      console.error("Failed to create default expense categories:", categoryError);
+    }
 
     return NextResponse.json(
       {
@@ -90,9 +95,25 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    console.error("Signup error:", error);
+    // Prismaエラーの詳細をログに記録
+    if (error && typeof error === "object" && "code" in error) {
+      console.error("Prisma error:", {
+        code: (error as any).code,
+        message: (error as any).message,
+        meta: (error as any).meta,
+      });
+    } else {
+      console.error("Signup error:", error);
+    }
+
     return NextResponse.json(
-      { error: "サーバーエラーが発生しました" },
+      { 
+        error: "サーバーエラーが発生しました",
+        // 開発環境では詳細なエラー情報を返す
+        ...(process.env.NODE_ENV === "development" && error instanceof Error
+          ? { details: error.message }
+          : {}),
+      },
       { status: 500 }
     );
   }

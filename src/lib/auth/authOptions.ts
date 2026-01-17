@@ -106,10 +106,12 @@ export const authOptions: NextAuthOptions = {
           });
 
           // デフォルトの経費カテゴリを作成
-          await createDefaultExpenseCategories(newUser.id);
-
-          // デフォルトの経費カテゴリを作成
-          await createDefaultExpenseCategories(newUser.id);
+          try {
+            await createDefaultExpenseCategories(newUser.id);
+          } catch (categoryError) {
+            // 経費カテゴリの作成に失敗してもログインは成功とする
+            console.error("Failed to create default expense categories:", categoryError);
+          }
         }
       }
       return true;
