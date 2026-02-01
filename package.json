@@ -16,7 +16,7 @@
     "prisma:studio": "prisma studio",
     "prisma:seed": "tsx prisma/seed.ts",
     "postinstall": "prisma generate",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build"
+    "vercel-build": "prisma generate && prisma migrate resolve --applied 20260117191843_add_hourly_rate_to_projects || true && prisma migrate deploy && next build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -48,7 +48,6 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.1.2",
-    "@vitest/ui": "^2.1.82",
     "@vitest/ui": "^2.1.8",
     "eslint": "^9.18.0",
     "eslint-config-next": "^15.1.0",
