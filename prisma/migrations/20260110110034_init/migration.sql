@@ -47,7 +47,7 @@ CREATE TABLE "projects" (
     "description" TEXT,
     "contract_type" "contract_type" NOT NULL,
     "contract_amount" INTEGER,
-    "hourly_rate" INTEGER,
+    
     "hourly_rate" INTEGER,
     "start_date" TIMESTAMP(3),
     "end_date" TIMESTAMP(3),
