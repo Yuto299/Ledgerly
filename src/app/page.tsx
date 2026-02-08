@@ -726,16 +726,6 @@ export default function Home() {
               </Link>
             </article>
           </div>
-
-          <div className="mt-12 text-center">
-            <p className="text-gray-600 text-sm">
-              すべてのプランで{" "}
-              <span className="font-semibold">14日間の返金保証</span> 付き
-            </p>
-            <p className="text-gray-500 text-xs mt-2">
-              お支払いはクレジットカードで簡単・安全に処理されます
-            </p>
-          </div>
         </div>
       </section>
 
