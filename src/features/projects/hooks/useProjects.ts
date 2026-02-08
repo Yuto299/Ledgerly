@@ -6,6 +6,7 @@ import {
   createProject,
   updateProject,
   deleteProject,
+  duplicateProject,
 } from "../services/projectApi";
 import { CreateProjectDto, UpdateProjectDto } from "../schemas/projectSchema";
 
@@ -80,6 +81,20 @@ export function useDeleteProject() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
       router.push("/projects");
+    },
+  });
+}
+
+/**
+ * 案件複製フック
+ */
+export function useDuplicateProject() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => duplicateProject(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
     },
   });
 }

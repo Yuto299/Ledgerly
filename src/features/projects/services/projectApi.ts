@@ -62,7 +62,7 @@ export async function getProject(id: string): Promise<ProjectDetailResponse> {
  * 案件を作成
  */
 export async function createProject(
-  data: CreateProjectDto
+  data: CreateProjectDto,
 ): Promise<ProjectResponse> {
   return fetchApi(BASE_URL, {
     method: "POST",
@@ -75,7 +75,7 @@ export async function createProject(
  */
 export async function updateProject(
   id: string,
-  data: UpdateProjectDto
+  data: UpdateProjectDto,
 ): Promise<ProjectResponse> {
   return fetchApi(`${BASE_URL}/${id}`, {
     method: "PUT",
@@ -89,5 +89,14 @@ export async function updateProject(
 export async function deleteProject(id: string): Promise<{ success: boolean }> {
   return fetchApi(`${BASE_URL}/${id}`, {
     method: "DELETE",
+  });
+}
+
+/**
+ * 案件を複製
+ */
+export async function duplicateProject(id: string): Promise<ProjectResponse> {
+  return fetchApi(`${BASE_URL}/${id}/duplicate`, {
+    method: "POST",
   });
 }

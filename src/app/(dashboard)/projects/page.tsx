@@ -5,6 +5,7 @@ import { useState } from "react";
 import {
   useProjects,
   useDeleteProject,
+  useDuplicateProject,
 } from "@/features/projects/hooks/useProjects";
 import Card from "@/components/atoms/Card";
 import Button from "@/components/atoms/Button";
@@ -42,13 +43,15 @@ export default function ProjectsPage() {
     status: statusFilter || undefined,
   });
   const { mutate: deleteProject } = useDeleteProject();
+  const { mutate: duplicateProject } = useDuplicateProject();
   const { addToast } = useToast();
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [duplicatingId, setDuplicatingId] = useState<string | null>(null);
 
   const handleDelete = (projectId: string, projectName: string) => {
     if (
       window.confirm(
-        `案件「${projectName}」を削除しますか？\n関連する請求書や経費も影響を受ける可能性があります。`
+        `案件「${projectName}」を削除しますか？\n関連する請求書や経費も影響を受ける可能性があります。`,
       )
     ) {
       setDeletingId(projectId);
@@ -63,6 +66,20 @@ export default function ProjectsPage() {
         },
       });
     }
+  };
+
+  const handleDuplicate = (projectId: string, projectName: string) => {
+    setDuplicatingId(projectId);
+    duplicateProject(projectId, {
+      onSuccess: () => {
+        addToast(`案件「${projectName}」を複製しました`, "success");
+        setDuplicatingId(null);
+      },
+      onError: (error) => {
+        addToast(`複製に失敗しました: ${error.message}`, "error");
+        setDuplicatingId(null);
+      },
+    });
   };
 
   if (isLoading) {
@@ -174,8 +191,8 @@ export default function ProjectsPage() {
                       {project.contractType === "HOURLY" && project.hourlyRate
                         ? `${formatCurrency(project.hourlyRate)}/時間`
                         : project.contractAmount
-                        ? formatCurrency(project.contractAmount)
-                        : "-"}
+                          ? formatCurrency(project.contractAmount)
+                          : "-"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <Badge variant={STATUS_VARIANTS[project.status]}>
@@ -192,6 +209,15 @@ export default function ProjectsPage() {
                       >
                         編集
                       </Link>
+                      <button
+                        onClick={() =>
+                          handleDuplicate(project.id, project.name)
+                        }
+                        disabled={duplicatingId === project.id}
+                        className="text-green-600 hover:text-green-900 disabled:opacity-50 mr-4"
+                      >
+                        {duplicatingId === project.id ? "複製中..." : "複製"}
+                      </button>
                       <button
                         onClick={() => handleDelete(project.id, project.name)}
                         disabled={deletingId === project.id}
@@ -212,7 +238,7 @@ export default function ProjectsPage() {
         <div className="mt-4 flex justify-center gap-2">
           {Array.from(
             { length: data.pagination.totalPages },
-            (_, i) => i + 1
+            (_, i) => i + 1,
           ).map((page) => (
             <Link
               key={page}
