@@ -81,3 +81,17 @@ export function useDeleteExpense() {
     },
   });
 }
+
+/**
+ * 経費複製フック
+ */
+export function useDuplicateExpense() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (expenseId: string) => expenseApi.duplicate(expenseId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+    },
+  });
+}

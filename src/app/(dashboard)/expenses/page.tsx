@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   useExpenses,
   useDeleteExpense,
+  useDuplicateExpense,
 } from "@/features/expenses/hooks/useExpenses";
 import { useExpenseCategories } from "@/features/expense-categories/hooks/useExpenseCategories";
 import { useProjects } from "@/features/projects/hooks/useProjects";
@@ -27,10 +28,10 @@ export default function ExpensesPage() {
   const [categoryFilter, setCategoryFilter] = useState<string>("");
   const [projectFilter, setProjectFilter] = useState<string>("");
   const [monthFilter, setMonthFilter] = useState<string>(
-    (new Date().getMonth() + 1).toString().padStart(2, "0")
+    (new Date().getMonth() + 1).toString().padStart(2, "0"),
   );
   const [yearFilter, setYearFilter] = useState<string>(
-    new Date().getFullYear().toString()
+    new Date().getFullYear().toString(),
   );
 
   const { data, isLoading, error } = useExpenses({
@@ -39,24 +40,27 @@ export default function ExpensesPage() {
     startDate: monthFilter
       ? `${yearFilter}-${monthFilter}-01`
       : yearFilter
-      ? `${yearFilter}-01-01`
-      : undefined,
+        ? `${yearFilter}-01-01`
+        : undefined,
     endDate: monthFilter
       ? `${yearFilter}-${monthFilter}-${new Date(
           parseInt(yearFilter),
           parseInt(monthFilter),
-          0
+          0,
         ).getDate()}`
       : yearFilter
-      ? `${yearFilter}-12-31`
-      : undefined,
+        ? `${yearFilter}-12-31`
+        : undefined,
     limit: 100,
   });
   const { data: categoriesData } = useExpenseCategories();
   const { data: projectsData } = useProjects({ limit: 100 });
   const { mutate: deleteExpense, isPending: isDeleting } = useDeleteExpense();
+  const { mutate: duplicateExpense, isPending: isDuplicating } =
+    useDuplicateExpense();
   const { addToast } = useToast();
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [duplicatingId, setDuplicatingId] = useState<string | null>(null);
 
   const handleDelete = (expenseId: string, description: string) => {
     if (window.confirm(`経費「${description}」を削除しますか？`)) {
@@ -72,6 +76,23 @@ export default function ExpensesPage() {
         },
       });
     }
+  };
+
+  const handleDuplicate = (expenseId: string, description: string) => {
+    setDuplicatingId(expenseId);
+    duplicateExpense(expenseId, {
+      onSuccess: () => {
+        addToast(
+          `経費「${description}」を複製しました（日付は今日に設定）`,
+          "success",
+        );
+        setDuplicatingId(null);
+      },
+      onError: (error) => {
+        addToast(`複製に失敗しました: ${error.message}`, "error");
+        setDuplicatingId(null);
+      },
+    });
   };
 
   const handleExportCSV = () => {
@@ -102,7 +123,7 @@ export default function ExpensesPage() {
         { label: "支払方法", key: "paymentMethod" },
         { label: "備考", key: "notes" },
       ],
-      `expenses_${new Date().toISOString().split("T")[0]}.csv`
+      `expenses_${new Date().toISOString().split("T")[0]}.csv`,
     );
 
     addToast("CSVをエクスポートしました", "success");
@@ -131,7 +152,7 @@ export default function ExpensesPage() {
   // 合計金額を計算
   const totalAmount = expenses.reduce(
     (sum, expense) => sum + expense.amount,
-    0
+    0,
   );
 
   return (
@@ -239,8 +260,8 @@ export default function ExpensesPage() {
               {monthFilter
                 ? `${yearFilter}年${parseInt(monthFilter)}月`
                 : yearFilter
-                ? `${yearFilter}年`
-                : "全期間"}
+                  ? `${yearFilter}年`
+                  : "全期間"}
               の合計:
               <span className="ml-2 text-lg font-bold text-gray-900">
                 {formatCurrency(totalAmount)}
@@ -339,9 +360,21 @@ export default function ExpensesPage() {
                       </Link>
                       <button
                         onClick={() =>
+                          handleDuplicate(
+                            expense.id,
+                            expense.description || "経費",
+                          )
+                        }
+                        disabled={duplicatingId === expense.id}
+                        className="text-green-600 hover:text-green-900 disabled:opacity-50 mr-4"
+                      >
+                        {duplicatingId === expense.id ? "複製中..." : "複製"}
+                      </button>
+                      <button
+                        onClick={() =>
                           handleDelete(
                             expense.id,
-                            expense.description || "経費"
+                            expense.description || "経費",
                           )
                         }
                         disabled={deletingId === expense.id}
@@ -363,7 +396,7 @@ export default function ExpensesPage() {
                   </td>
                   <td className="px-6 py-4 text-sm font-bold text-gray-900 text-right">
                     {formatCurrency(
-                      expenses.reduce((sum, e) => sum + e.amount, 0)
+                      expenses.reduce((sum, e) => sum + e.amount, 0),
                     )}
                   </td>
                   <td></td>

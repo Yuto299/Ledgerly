@@ -107,4 +107,20 @@ export const expenseApi = {
       throw new Error("経費の削除に失敗しました");
     }
   },
+
+  /**
+   * 経費複製
+   */
+  async duplicate(expenseId: string): Promise<unknown> {
+    const response = await fetch(
+      `${API_BASE_URL}/expenses/${expenseId}/duplicate`,
+      {
+        method: "POST",
+      },
+    );
+    if (!response.ok) {
+      throw new Error("経費の複製に失敗しました");
+    }
+    return response.json();
+  },
 };
