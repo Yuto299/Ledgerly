@@ -2,11 +2,30 @@ import Link from "next/link";
 import Button from "@/components/atoms/Button";
 import type { Metadata } from "next";
 
+const baseUrl = process.env.NEXTAUTH_URL || "https://ledgerly.com";
+
 export const metadata: Metadata = {
-  title: "Ledgerly - フリーランス向けシンプル会計管理",
+  title: "ホーム",
   description:
     "請求書作成から経費管理、売上分析まで。フリーランス・個人事業主のための会計管理システム。無料プランで今すぐ始められます。",
-  keywords: "フリーランス,会計管理,請求書作成,経費管理,個人事業主",
+  alternates: {
+    canonical: baseUrl,
+  },
+  openGraph: {
+    title: "Ledgerly - フリーランス向け会計管理システム",
+    description:
+      "請求書作成から経費管理、売上分析まで。フリーランス・個人事業主のための会計管理システム。無料プランで今すぐ始められます。",
+    url: baseUrl,
+    type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Ledgerly",
+      },
+    ],
+  },
 };
 
 export default function Home() {
