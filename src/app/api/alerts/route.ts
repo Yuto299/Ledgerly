@@ -21,7 +21,7 @@ export async function GET() {
     threeDaysFromNow.setDate(today.getDate() + 3);
 
     // 期限切れ請求書（未払いのみ）
-    const overdueInvoices = await prisma.invoice.findMany({
+    const overdueInvoicesRaw = await prisma.invoice.findMany({
       where: {
         userId,
         deletedAt: null,
@@ -49,8 +49,13 @@ export async function GET() {
       },
     });
 
+    // 完全に入金済みでない請求書のみをフィルタリング
+    const overdueInvoices = overdueInvoicesRaw.filter(
+      (inv) => inv.paidAmount < inv.totalAmount,
+    );
+
     // 7日以内に期限が来る請求書（未払いのみ）
-    const upcomingInvoices = await prisma.invoice.findMany({
+    const upcomingInvoicesRaw = await prisma.invoice.findMany({
       where: {
         userId,
         deletedAt: null,
@@ -79,8 +84,12 @@ export async function GET() {
       },
     });
 
+    const upcomingInvoices = upcomingInvoicesRaw.filter(
+      (inv) => inv.paidAmount < inv.totalAmount,
+    );
+
     // 3日以内に期限が来る請求書（緊急）
-    const urgentInvoices = await prisma.invoice.findMany({
+    const urgentInvoicesRaw = await prisma.invoice.findMany({
       where: {
         userId,
         deletedAt: null,
@@ -109,6 +118,10 @@ export async function GET() {
       },
     });
 
+    const urgentInvoices = urgentInvoicesRaw.filter(
+      (inv) => inv.paidAmount < inv.totalAmount,
+    );
+
     return NextResponse.json({
       overdue: overdueInvoices,
       upcoming: upcomingInvoices,
@@ -119,7 +132,7 @@ export async function GET() {
         urgentCount: urgentInvoices.length,
         overdueAmount: overdueInvoices.reduce(
           (sum, inv) => sum + (inv.totalAmount - inv.paidAmount),
-          0
+          0,
         ),
       },
     });
@@ -127,7 +140,7 @@ export async function GET() {
     console.error("Get alerts error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
