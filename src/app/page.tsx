@@ -484,7 +484,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
             {/* Free Plan */}
             <article className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg border-2 border-gray-200 p-6 sm:p-8 hover:shadow-2xl transition-all duration-300">
               <div className="text-center mb-6 sm:mb-8">
@@ -547,7 +547,7 @@ export default function Home() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span className="text-gray-700">顧客管理（50件まで）</span>
+                  <span className="text-gray-700">顧客管理（10件まで）</span>
                 </li>
                 <li className="flex items-start">
                   <svg
@@ -589,7 +589,7 @@ export default function Home() {
               </Link>
             </article>
 
-            {/* Premium Plan */}
+            {/* Standard Plan - おすすめ */}
             <article className="bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl shadow-2xl border-2 border-blue-500 p-6 sm:p-8 relative hover:scale-105 transition-all duration-300">
               <div className="absolute -top-3 sm:-top-4 left-1/2 transform -translate-x-1/2">
                 <span
@@ -602,18 +602,18 @@ export default function Home() {
 
               <div className="text-center mb-6 sm:mb-8 mt-4 sm:mt-0">
                 <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 leading-tight tracking-tight">
-                  プレミアムプラン
+                  スタンダードプラン
                 </h3>
                 <div className="flex items-end justify-center gap-2 mb-4">
                   <span className="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-slate-600 bg-clip-text text-transparent leading-none tracking-tight">
-                    ¥980
+                    ¥580
                   </span>
                   <span className="text-gray-600 mb-2 leading-relaxed text-sm sm:text-base">
                     /月
                   </span>
                 </div>
                 <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-                  本格的にビジネスを成長させたい方に
+                  安定した収入がある方に
                 </p>
               </div>
 
@@ -631,7 +631,7 @@ export default function Home() {
                     />
                   </svg>
                   <span className="text-gray-700 font-semibold">
-                    請求書作成（無制限）
+                    請求書作成（月15件まで）
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -647,7 +647,7 @@ export default function Home() {
                     />
                   </svg>
                   <span className="text-gray-700 font-semibold">
-                    高度な経費管理・分析
+                    経費管理・分析
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -663,7 +663,7 @@ export default function Home() {
                     />
                   </svg>
                   <span className="text-gray-700 font-semibold">
-                    顧客管理（無制限）
+                    顧客管理（15件まで）
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -679,7 +679,7 @@ export default function Home() {
                     />
                   </svg>
                   <span className="text-gray-700 font-semibold">
-                    詳細なレポート・分析
+                    詳細なレポート
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -694,36 +694,116 @@ export default function Home() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span className="text-gray-700 font-semibold">
-                    CSV一括インポート
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <svg
-                    className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-0.5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span className="text-gray-700 font-semibold">
-                    優先サポート
-                  </span>
+                  <span className="text-gray-700 font-semibold">CSV出力</span>
                 </li>
               </ul>
 
               <Link href="/signup" className="block">
                 <Button
                   className="w-full py-3 bg-gradient-to-r from-blue-600 to-slate-600 hover:from-blue-700 hover:to-slate-700 shadow-lg"
-                  aria-label="プレミアムプランで登録"
+                  aria-label="スタンダードプランで登録"
                 >
-                  プレミアムを始める
+                  スタンダードを始める
                 </Button>
               </Link>
+            </article>
+
+            {/* Premium Plan */}
+            <article className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg border-2 border-gray-200 p-6 sm:p-8 hover:shadow-2xl transition-all duration-300 opacity-75">
+              <div className="text-center mb-6 sm:mb-8">
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 leading-tight tracking-tight">
+                  プレミアムプラン
+                </h3>
+                <div className="flex items-end justify-center gap-2 mb-4">
+                  <span className="text-2xl sm:text-3xl font-bold text-gray-600 leading-none tracking-tight">
+                    近日公開
+                  </span>
+                </div>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                  本格的にビジネスを成長させたい方に
+                </p>
+              </div>
+
+              <ul className="space-y-3.5 mb-8">
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-gray-400 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-500">請求書作成（無制限）</span>
+                </li>
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-gray-400 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-500">高度な経費管理・分析</span>
+                </li>
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-gray-400 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-500">顧客管理（無制限）</span>
+                </li>
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-gray-400 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-500">詳細なレポート・分析</span>
+                </li>
+                <li className="flex items-start">
+                  <svg
+                    className="w-6 h-6 text-gray-400 mr-3 flex-shrink-0 mt-0.5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-500">優先サポート</span>
+                </li>
+              </ul>
+
+              <Button
+                className="w-full py-3 bg-gray-400 cursor-not-allowed"
+                disabled
+                aria-label="プレミアムプラン近日公開"
+              >
+                近日公開
+              </Button>
             </article>
           </div>
         </div>
