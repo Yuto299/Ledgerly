@@ -9,11 +9,11 @@ import { handleApiError } from "@/lib/api/errorHandler";
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const userId = await getUserId();
-    const projectId = params.id;
+    const { id: projectId } = await params;
 
     const duplicatedProject = await duplicateProject(userId, projectId);
 
