@@ -43,7 +43,7 @@ const INVOICE_STATUS_COLORS: Record<
 
 export default function DashboardPage() {
   const [selectedMonth, setSelectedMonth] = useState(
-    format(new Date(), "yyyy-MM")
+    format(new Date(), "yyyy-MM"),
   );
   const { data, isLoading } = useDashboardData(selectedMonth);
   const { data: alertsData, isLoading: alertsLoading } = useAlerts();
@@ -133,7 +133,7 @@ export default function DashboardPage() {
                         </div>
                         <p className="font-bold text-red-600 flex-shrink-0 leading-tight">
                           {formatCurrency(
-                            invoice.totalAmount - invoice.paidAmount
+                            invoice.totalAmount - invoice.paidAmount,
                           )}
                         </p>
                       </div>
@@ -183,7 +183,7 @@ export default function DashboardPage() {
                         </div>
                         <p className="font-bold text-yellow-600 flex-shrink-0 leading-tight">
                           {formatCurrency(
-                            invoice.totalAmount - invoice.paidAmount
+                            invoice.totalAmount - invoice.paidAmount,
                           )}
                         </p>
                       </div>
@@ -354,7 +354,7 @@ export default function DashboardPage() {
                       (entry.amount /
                         expenseBreakdown.reduce(
                           (sum, e) => sum + e.amount,
-                          0
+                          0,
                         )) *
                       100
                     ).toFixed(0);
@@ -535,7 +535,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
                   </Link>
-                )
+                ),
               )}
             </div>
           ) : (
@@ -599,7 +599,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
                   </Link>
-                )
+                ),
               )}
             </div>
           ) : (
