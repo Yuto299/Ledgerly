@@ -75,7 +75,7 @@ export async function GET(
     });
 
     // PDF生成
-    const pdfElement = React.createElement(InvoicePDF as any, {
+    const pdfElement = React.createElement(InvoicePDF, {
       invoice: pdfInvoice,
       settings: {
         businessName: settings.businessName,
@@ -94,12 +94,14 @@ export async function GET(
     });
 
     console.log("Starting PDF stream rendering...");
-    const stream = await renderToStream(pdfElement as any);
+    const stream = await renderToStream(
+      pdfElement as unknown as Parameters<typeof renderToStream>[0]
+    );
 
     console.log("PDF stream created, converting to buffer...");
     // ストリームをBufferに変換
     const chunks: Uint8Array[] = [];
-    for await (const chunk of stream as any) {
+    for await (const chunk of stream as unknown as AsyncIterable<Uint8Array>) {
       chunks.push(chunk);
     }
     const buffer = Buffer.concat(chunks);

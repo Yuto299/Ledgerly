@@ -31,12 +31,12 @@ export const userSettingsRepository = {
    * ユーザーの設定を取得（存在しない場合は作成）
    */
   async findOrCreateByUserId(userId: string): Promise<UserSettings> {
-    let settings = await (prisma as any).userSettings.findUnique({
+    let settings = await prisma.userSettings.findUnique({
       where: { userId },
     });
 
     if (!settings) {
-      settings = await (prisma as any).userSettings.create({
+      settings = await prisma.userSettings.create({
         data: {
           userId,
         },
@@ -56,7 +56,7 @@ export const userSettingsRepository = {
     // 設定が存在しない場合は作成
     await this.findOrCreateByUserId(userId);
 
-    return (prisma as any).userSettings.update({
+    return prisma.userSettings.update({
       where: { userId },
       data,
     });
@@ -66,7 +66,7 @@ export const userSettingsRepository = {
    * ユーザーの設定を削除
    */
   async delete(userId: string): Promise<void> {
-    await (prisma as any).userSettings.delete({
+    await prisma.userSettings.delete({
       where: { userId },
     });
   },

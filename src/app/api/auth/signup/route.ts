@@ -97,10 +97,11 @@ export async function POST(req: NextRequest) {
 
     // Prismaエラーの詳細をログに記録
     if (error && typeof error === "object" && "code" in error) {
+      const prismaError = error as { code: string; message: string; meta: unknown };
       console.error("Prisma error:", {
-        code: (error as any).code,
-        message: (error as any).message,
-        meta: (error as any).meta,
+        code: prismaError.code,
+        message: prismaError.message,
+        meta: prismaError.meta,
       });
     } else {
       console.error("Signup error:", error);
