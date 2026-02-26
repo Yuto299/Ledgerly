@@ -28,6 +28,8 @@ export function useRegisterPayment(invoiceId: string) {
       });
       queryClient.invalidateQueries({ queryKey: ["invoices", invoiceId] });
       queryClient.invalidateQueries({ queryKey: ["invoices"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({ queryKey: ["reports"] });
     },
   });
 }
@@ -52,6 +54,8 @@ export function useUpdatePayment(invoiceId: string) {
       });
       queryClient.invalidateQueries({ queryKey: ["invoices", invoiceId] });
       queryClient.invalidateQueries({ queryKey: ["invoices"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({ queryKey: ["reports"] });
     },
   });
 }
@@ -70,6 +74,8 @@ export function useDeletePayment(invoiceId: string) {
       });
       queryClient.invalidateQueries({ queryKey: ["invoices", invoiceId] });
       queryClient.invalidateQueries({ queryKey: ["invoices"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({ queryKey: ["reports"] });
     },
   });
 }
