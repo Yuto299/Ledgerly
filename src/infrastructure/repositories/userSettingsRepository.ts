@@ -51,7 +51,7 @@ export const userSettingsRepository = {
    */
   async update(
     userId: string,
-    data: UserSettingsUpdateData
+    data: UserSettingsUpdateData,
   ): Promise<UserSettings> {
     // 設定が存在しない場合は作成
     await this.findOrCreateByUserId(userId);

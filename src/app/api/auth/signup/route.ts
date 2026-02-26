@@ -31,10 +31,10 @@ export async function POST(req: NextRequest) {
           status: 429,
           headers: {
             "Retry-After": String(
-              Math.ceil((rateLimit.resetTime - Date.now()) / 1000)
+              Math.ceil((rateLimit.resetTime - Date.now()) / 1000),
             ),
           },
-        }
+        },
       );
     }
 
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
     if (existingUser) {
       return NextResponse.json(
         { error: "このメールアドレスは既に登録されています" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -77,7 +77,10 @@ export async function POST(req: NextRequest) {
       await createDefaultExpenseCategories(user.id);
     } catch (categoryError) {
       // 経費カテゴリの作成に失敗してもユーザー登録は成功とする
-      console.error("Failed to create default expense categories:", categoryError);
+      console.error(
+        "Failed to create default expense categories:",
+        categoryError,
+      );
     }
 
     return NextResponse.json(
@@ -85,19 +88,23 @@ export async function POST(req: NextRequest) {
         message: "ユーザー登録が完了しました",
         user,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: error.errors[0].message },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Prismaエラーの詳細をログに記録
     if (error && typeof error === "object" && "code" in error) {
-      const prismaError = error as { code: string; message: string; meta: unknown };
+      const prismaError = error as {
+        code: string;
+        message: string;
+        meta: unknown;
+      };
       console.error("Prisma error:", {
         code: prismaError.code,
         message: prismaError.message,
@@ -108,14 +115,14 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(
-      { 
+      {
         error: "サーバーエラーが発生しました",
         // 開発環境では詳細なエラー情報を返す
         ...(process.env.NODE_ENV === "development" && error instanceof Error
           ? { details: error.message }
           : {}),
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -11,7 +11,7 @@ export const runtime = "nodejs";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -95,7 +95,7 @@ export async function GET(
 
     console.log("Starting PDF stream rendering...");
     const stream = await renderToStream(
-      pdfElement as unknown as Parameters<typeof renderToStream>[0]
+      pdfElement as unknown as Parameters<typeof renderToStream>[0],
     );
 
     console.log("PDF stream created, converting to buffer...");
@@ -128,7 +128,7 @@ export async function GET(
         error: "Failed to generate PDF",
         details: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
