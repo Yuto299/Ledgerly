@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export interface MonthlySummary {
   month: string; // YYYY-MM
-  revenue: number; // 売上（入金ベース）
+  revenue: number; // 売上（発生ベース：プロジェクト完了基準）
   billedAmount: number; // 請求額（請求ベース）
   expenses: number; // 経費
   profit: number; // 利益（売上 - 経費）
@@ -41,24 +41,30 @@ export class ReportService {
    */
   static async getMonthlySummary(
     userId: string,
-    month: string // YYYY-MM
+    month: string, // YYYY-MM
   ): Promise<MonthlySummary> {
     const [year, monthNum] = month.split("-").map(Number);
     const startDate = startOfMonth(new Date(year, monthNum - 1));
     const endDate = endOfMonth(new Date(year, monthNum - 1));
 
-    // 売上（入金ベース）：当月に入金された金額
-    const payments = await prisma.payment.findMany({
+    // 売上（発生ベース）：プロジェクト完了月の請求額
+    const completedInvoices = await prisma.invoice.findMany({
       where: {
-        invoice: { userId, deletedAt: null },
-        paidAt: {
-          gte: startDate,
-          lte: endDate,
+        userId,
+        deletedAt: null,
+        project: {
+          endDate: {
+            gte: startDate,
+            lte: endDate,
+          },
         },
       },
-      select: { amount: true },
+      select: { totalAmount: true },
     });
-    const revenue = payments.reduce((sum, p) => sum + p.amount, 0);
+    const revenue = completedInvoices.reduce(
+      (sum, i) => sum + i.totalAmount,
+      0,
+    );
 
     // 請求額（請求ベース）：当月が支払期限の請求書の合計
     const invoices = await prisma.invoice.findMany({
@@ -88,7 +94,7 @@ export class ReportService {
     });
     const expenses = expenseRecords.reduce((sum, e) => sum + e.amount, 0);
 
-    // 利益（入金ベース）
+    // 利益（発生ベース）
     const profit = revenue - expenses;
 
     // 未回収金額：すべての請求書の未入金合計
@@ -102,7 +108,7 @@ export class ReportService {
     });
     const unpaidAmount = allInvoices.reduce(
       (sum, i) => sum + (i.totalAmount - i.paidAmount),
-      0
+      0,
     );
 
     return {
@@ -120,7 +126,7 @@ export class ReportService {
    */
   static async getMonthlyTrend(
     userId: string,
-    months: number = 6
+    months: number = 6,
   ): Promise<MonthlyTrend[]> {
     const results: MonthlyTrend[] = [];
     const today = new Date();
@@ -131,18 +137,24 @@ export class ReportService {
       const startDate = startOfMonth(targetDate);
       const endDate = endOfMonth(targetDate);
 
-      // 売上（入金ベース）
-      const payments = await prisma.payment.findMany({
+      // 売上（発生ベース）：プロジェクト完了月の請求額
+      const completedInvoices = await prisma.invoice.findMany({
         where: {
-          invoice: { userId, deletedAt: null },
-          paidAt: {
-            gte: startDate,
-            lte: endDate,
+          userId,
+          deletedAt: null,
+          project: {
+            endDate: {
+              gte: startDate,
+              lte: endDate,
+            },
           },
         },
-        select: { amount: true },
+        select: { totalAmount: true },
       });
-      const revenue = payments.reduce((sum, p) => sum + p.amount, 0);
+      const revenue = completedInvoices.reduce(
+        (sum, i) => sum + i.totalAmount,
+        0,
+      );
 
       // 経費
       const expenseRecords = await prisma.expense.findMany({
@@ -174,7 +186,7 @@ export class ReportService {
    */
   static async getExpenseBreakdown(
     userId: string,
-    month?: string // YYYY-MM（省略時は全期間）
+    month?: string, // YYYY-MM（省略時は全期間）
   ): Promise<ExpenseBreakdown[]> {
     let startDate: Date | undefined;
     let endDate: Date | undefined;
@@ -232,7 +244,7 @@ export class ReportService {
    */
   static async getProjectSales(
     userId: string,
-    month?: string // YYYY-MM（省略時は全期間）
+    month?: string, // YYYY-MM（省略時は全期間）
   ): Promise<ProjectSales[]> {
     let startDate: Date | undefined;
     let endDate: Date | undefined;
@@ -283,7 +295,7 @@ export class ReportService {
     }
 
     return Array.from(projectMap.values()).sort(
-      (a, b) => b.totalBilled - a.totalBilled
+      (a, b) => b.totalBilled - a.totalBilled,
     );
   }
 
