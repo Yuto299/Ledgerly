@@ -204,9 +204,6 @@ export default function DashboardPage() {
           <p className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 leading-tight tracking-tight">
             {formatCurrency(summary.revenue)}
           </p>
-          <p className="text-sm text-gray-500 leading-relaxed">
-            請求額: {formatCurrency(summary.billedAmount)}
-          </p>
         </Card>
 
         <Card className="hover:shadow-md transition-shadow">
