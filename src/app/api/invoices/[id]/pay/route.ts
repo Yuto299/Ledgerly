@@ -15,10 +15,15 @@ export async function POST(
     const userId = await getUserId();
     const { id } = await params;
 
+    console.log(`[pay] userId=${userId}, invoiceId=${id}`);
     const invoice = await markInvoicePaid(userId, id);
+    console.log(
+      `[pay] success, paidAmount=${invoice?.paidAmount}, status=${invoice?.status}`,
+    );
 
     return NextResponse.json(invoice);
   } catch (error) {
+    console.error("[pay] error:", error);
     return handleApiError(error);
   }
 }

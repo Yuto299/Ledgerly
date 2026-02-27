@@ -103,6 +103,9 @@ export function useMarkInvoiceSent() {
       queryClient.invalidateQueries({ queryKey: ["dashboard"] });
       queryClient.invalidateQueries({ queryKey: ["reports"] });
     },
+    onError: (error: Error) => {
+      alert(`送付済みへの変更に失敗しました: ${error.message}`);
+    },
   });
 }
 
@@ -121,6 +124,9 @@ export function useMarkInvoicePaid() {
       queryClient.invalidateQueries({ queryKey: ["payments", "invoice", id] });
       queryClient.invalidateQueries({ queryKey: ["dashboard"] });
       queryClient.invalidateQueries({ queryKey: ["reports"] });
+    },
+    onError: (error: Error) => {
+      alert(`入金済みへの変更に失敗しました: ${error.message}`);
     },
   });
 }
