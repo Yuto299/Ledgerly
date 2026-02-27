@@ -16,7 +16,7 @@ export class InvoiceRepository {
       customerId?: string;
       projectId?: string;
       status?: InvoiceStatus;
-    } = {}
+    } = {},
   ) {
     const { page = 1, limit = 10, customerId, projectId, status } = options;
     const skip = (page - 1) * limit;
@@ -181,7 +181,7 @@ export class InvoiceRepository {
       dueAt?: Date;
       totalAmount?: number;
       notes?: string;
-    }
+    },
   ) {
     return prisma.invoice.update({
       where: {
@@ -250,7 +250,10 @@ export class InvoiceRepository {
     let status = invoice.status;
     if (paidAmount >= invoice.totalAmount) {
       status = "PAID";
-    } else if (paidAmount > 0 && status === "DRAFT") {
+    } else if (paidAmount === 0) {
+      status = "DRAFT";
+    } else {
+      // 一部入金
       status = "SENT";
     }
 

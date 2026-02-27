@@ -33,18 +33,18 @@ describe("ReportService", () => {
     it("月次サマリを正しく計算する", async () => {
       const prisma = new PrismaClient();
 
-      // 入金データのモック
-      vi.mocked(prisma.payment.findMany).mockResolvedValueOnce([
-        { amount: 100000 } as any,
-        { amount: 150000 } as any,
-      ]);
-
-      // 請求書データのモック
+      // 売上（発生ベース）：プロジェクト完了月の請求書
       vi.mocked(prisma.invoice.findMany)
+        .mockResolvedValueOnce([
+          { totalAmount: 200000 } as any,
+          { totalAmount: 150000 } as any,
+        ])
+        // 当月期限の請求書（billedAmount）
         .mockResolvedValueOnce([
           { totalAmount: 300000 } as any,
           { totalAmount: 200000 } as any,
         ])
+        // 未回収金額計算
         .mockResolvedValueOnce([
           { totalAmount: 500000, paidAmount: 250000 } as any,
         ]);
@@ -58,20 +58,20 @@ describe("ReportService", () => {
       const result = await ReportService.getMonthlySummary(userId, month);
 
       expect(result.month).toBe(month);
-      expect(result.revenue).toBe(250000); // 入金合計
-      expect(result.billedAmount).toBe(500000); // 請求額合計
+      expect(result.revenue).toBe(350000); // プロジェクト完了月の請求合計
+      expect(result.billedAmount).toBe(500000); // 当月期限の請求額合計
       expect(result.expenses).toBe(80000); // 経費合計
-      expect(result.profit).toBe(170000); // 利益（売上 - 経費）
+      expect(result.profit).toBe(270000); // 利益（売上 - 経費）
       expect(result.unpaidAmount).toBe(250000); // 未回収
     });
 
     it("データがない場合はすべて0を返す", async () => {
       const prisma = new PrismaClient();
 
-      vi.mocked(prisma.payment.findMany).mockResolvedValueOnce([]);
       vi.mocked(prisma.invoice.findMany)
-        .mockResolvedValueOnce([])
-        .mockResolvedValueOnce([]);
+        .mockResolvedValueOnce([]) // completedInvoices
+        .mockResolvedValueOnce([]) // billedAmount
+        .mockResolvedValueOnce([]); // allInvoices
       vi.mocked(prisma.expense.findMany).mockResolvedValueOnce([]);
 
       const result = await ReportService.getMonthlySummary(userId, month);

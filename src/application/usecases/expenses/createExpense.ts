@@ -18,7 +18,7 @@ export async function createExpense(userId: string, data: CreateExpenseDto) {
   // カテゴリの存在確認
   const category = await expenseCategoryRepository.findById(
     validatedData.categoryId,
-    userId
+    userId,
   );
   if (!category) {
     throw new NotFoundError("カテゴリが見つかりません");
@@ -27,8 +27,8 @@ export async function createExpense(userId: string, data: CreateExpenseDto) {
   // 案件の存在確認（指定されている場合）
   if (validatedData.projectId) {
     const project = await projectRepository.findById(
+      validatedData.projectId,
       userId,
-      validatedData.projectId
     );
     if (!project) {
       throw new NotFoundError("案件が見つかりません");

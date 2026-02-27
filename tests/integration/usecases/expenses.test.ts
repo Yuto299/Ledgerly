@@ -101,7 +101,7 @@ describe("経費登録の統合テスト", () => {
 
     it("存在しないカテゴリを指定するとエラーになる", async () => {
       const expenseData = {
-        categoryId: "invalid-category-id",
+        categoryId: "00000000-0000-0000-0000-000000000000",
         date: "2026-01-15",
         amount: 1000,
         paymentMethod: "CASH" as const,
@@ -109,13 +109,13 @@ describe("経費登録の統合テスト", () => {
       };
 
       await expect(createExpense(userId, expenseData)).rejects.toThrow(
-        NotFoundError
+        NotFoundError,
       );
     });
 
     it("存在しない案件を指定するとエラーになる", async () => {
       const expenseData = {
-        projectId: "invalid-project-id",
+        projectId: "00000000-0000-0000-0000-000000000001",
         categoryId,
         date: "2026-01-15",
         amount: 1000,
@@ -124,7 +124,7 @@ describe("経費登録の統合テスト", () => {
       };
 
       await expect(createExpense(userId, expenseData)).rejects.toThrow(
-        NotFoundError
+        NotFoundError,
       );
     });
 
