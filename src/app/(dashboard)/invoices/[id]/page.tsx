@@ -8,19 +8,12 @@ import {
   useMarkInvoiceSent,
   useMarkInvoicePaid,
 } from "@/features/invoices/hooks/useInvoices";
-import {
-  usePaymentsByInvoice,
-  useRegisterPayment,
-  useDeletePayment,
-} from "@/features/payments/hooks/usePayments";
+import { usePaymentsByInvoice } from "@/features/payments/hooks/usePayments";
 import Card from "@/components/atoms/Card";
 import Button from "@/components/atoms/Button";
 import Badge from "@/components/atoms/Badge";
-import { Modal } from "@/components/molecules/Modal";
-import { PaymentForm } from "@/features/payments/components/PaymentForm";
 import { formatDate } from "@/lib/utils";
 import { formatCurrency } from "@/lib/money/formatter";
-import { CreatePaymentDto } from "@/features/payments/schemas/paymentSchema";
 
 const STATUS_LABELS: Record<string, string> = {
   DRAFT: "下書き",
@@ -48,10 +41,6 @@ export default function InvoiceDetailPage({
   const { mutate: deleteInvoice, isPending: isDeleting } = useDeleteInvoice();
   const { mutate: markSent, isPending: isSending } = useMarkInvoiceSent();
   const { mutate: markPaid, isPending: isMarkingPaid } = useMarkInvoicePaid();
-  const { mutate: registerPayment, isPending: isRegistering } =
-    useRegisterPayment(id);
-  const { mutate: deletePayment } = useDeletePayment(id);
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isDownloadingPDF, setIsDownloadingPDF] = useState(false);
 
   const handleDelete = () => {
@@ -100,20 +89,6 @@ export default function InvoiceDetailPage({
       alert("PDFの生成に失敗しました");
     } finally {
       setIsDownloadingPDF(false);
-    }
-  };
-
-  const handleRegisterPayment = (data: CreatePaymentDto) => {
-    registerPayment(data, {
-      onSuccess: () => {
-        setIsPaymentModalOpen(false);
-      },
-    });
-  };
-
-  const handleDeletePayment = (paymentId: string) => {
-    if (window.confirm("この入金を削除してもよろしいですか？")) {
-      deletePayment(paymentId);
     }
   };
 
@@ -325,10 +300,7 @@ export default function InvoiceDetailPage({
       </Card>
 
       <Card>
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">入金履歴</h2>
-          <Button onClick={() => setIsPaymentModalOpen(true)}>入金登録</Button>
-        </div>
+        <h2 className="text-xl font-semibold mb-4">入金履歴</h2>
         {payments.length === 0 ? (
           <p className="text-sm text-gray-500">入金履歴がありません</p>
         ) : (
@@ -361,31 +333,12 @@ export default function InvoiceDetailPage({
                   <p className="text-sm font-bold text-green-600">
                     {formatCurrency(payment.amount)}
                   </p>
-                  <Button
-                    variant="danger"
-                    onClick={() => handleDeletePayment(payment.id)}
-                    className="text-xs"
-                  >
-                    削除
-                  </Button>
                 </div>
               </div>
             ))}
           </div>
         )}
       </Card>
-
-      <Modal
-        isOpen={isPaymentModalOpen}
-        onClose={() => setIsPaymentModalOpen(false)}
-        title="入金登録"
-      >
-        <PaymentForm
-          onSubmit={handleRegisterPayment}
-          onCancel={() => setIsPaymentModalOpen(false)}
-          isSubmitting={isRegistering}
-        />
-      </Modal>
     </div>
   );
 }

@@ -64,7 +64,7 @@ export async function getInvoice(id: string): Promise<InvoiceDetailResponse> {
  * 請求書を作成
  */
 export async function createInvoice(
-  data: CreateInvoiceDto
+  data: CreateInvoiceDto,
 ): Promise<InvoiceResponse> {
   return fetchApi(BASE_URL, {
     method: "POST",
@@ -77,7 +77,7 @@ export async function createInvoice(
  */
 export async function updateInvoice(
   id: string,
-  data: UpdateInvoiceDto
+  data: UpdateInvoiceDto,
 ): Promise<InvoiceResponse> {
   return fetchApi(`${BASE_URL}/${id}`, {
     method: "PUT",
@@ -99,6 +99,15 @@ export async function deleteInvoice(id: string): Promise<{ success: boolean }> {
  */
 export async function markInvoiceSent(id: string): Promise<InvoiceResponse> {
   return fetchApi(`${BASE_URL}/${id}/send`, {
+    method: "POST",
+  });
+}
+
+/**
+ * 請求書を入金済みにする（入金レコードを自動生成）
+ */
+export async function markInvoicePaid(id: string): Promise<InvoiceResponse> {
+  return fetchApi(`${BASE_URL}/${id}/pay`, {
     method: "POST",
   });
 }

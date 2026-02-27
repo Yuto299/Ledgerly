@@ -7,6 +7,7 @@ import {
   updateInvoice,
   deleteInvoice,
   markInvoiceSent,
+  markInvoicePaid,
 } from "../services/invoiceApi";
 import { CreateInvoiceDto, UpdateInvoiceDto } from "../schemas/invoiceSchema";
 
@@ -103,15 +104,19 @@ export function useMarkInvoiceSent() {
 
 /**
  * 請求書入金済みフック
+ * 入金レコードを自動生成してpaidAmountを更新する
  */
 export function useMarkInvoicePaid() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => updateInvoice(id, { status: "PAID" }),
+    mutationFn: (id: string) => markInvoicePaid(id),
     onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: ["invoices"] });
       queryClient.invalidateQueries({ queryKey: ["invoices", id] });
+      queryClient.invalidateQueries({ queryKey: ["payments", "invoice", id] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({ queryKey: ["reports"] });
     },
   });
 }
