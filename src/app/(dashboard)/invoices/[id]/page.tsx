@@ -8,7 +8,6 @@ import {
   useMarkInvoiceSent,
   useMarkInvoicePaid,
 } from "@/features/invoices/hooks/useInvoices";
-import { usePaymentsByInvoice } from "@/features/payments/hooks/usePayments";
 import Card from "@/components/atoms/Card";
 import Button from "@/components/atoms/Button";
 import Badge from "@/components/atoms/Badge";
@@ -37,7 +36,6 @@ export default function InvoiceDetailPage({
 }) {
   const { id } = use(params);
   const { data, isLoading, error } = useInvoice(id);
-  const { data: paymentsData } = usePaymentsByInvoice(id);
   const { mutate: deleteInvoice, isPending: isDeleting } = useDeleteInvoice();
   const { mutate: markSent, isPending: isSending } = useMarkInvoiceSent();
   const { mutate: markPaid, isPending: isMarkingPaid } = useMarkInvoicePaid();
@@ -112,7 +110,6 @@ export default function InvoiceDetailPage({
 
   const { invoice } = data;
   const items = invoice.items || [];
-  const payments = paymentsData?.payments || [];
 
   return (
     <div>
@@ -299,46 +296,6 @@ export default function InvoiceDetailPage({
         </div>
       </Card>
 
-      <Card>
-        <h2 className="text-xl font-semibold mb-4">入金履歴</h2>
-        {payments.length === 0 ? (
-          <p className="text-sm text-gray-500">入金履歴がありません</p>
-        ) : (
-          <div className="space-y-2">
-            {payments.map((payment) => (
-              <div
-                key={payment.id}
-                className="flex justify-between items-center p-3 bg-gray-50 rounded"
-              >
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm font-medium text-gray-900">
-                      {formatDate(payment.paidAt)}
-                    </p>
-                    <Badge variant="info">
-                      {payment.paymentMethod === "BANK_TRANSFER" && "銀行振込"}
-                      {payment.paymentMethod === "CREDIT_CARD" &&
-                        "クレジットカード"}
-                      {payment.paymentMethod === "CASH" && "現金"}
-                      {payment.paymentMethod === "OTHER" && "その他"}
-                    </Badge>
-                  </div>
-                  {payment.notes && (
-                    <p className="text-xs text-gray-500 mt-1">
-                      {payment.notes}
-                    </p>
-                  )}
-                </div>
-                <div className="flex items-center gap-3">
-                  <p className="text-sm font-bold text-green-600">
-                    {formatCurrency(payment.amount)}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </Card>
     </div>
   );
 }
