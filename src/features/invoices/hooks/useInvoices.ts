@@ -66,6 +66,8 @@ export function useUpdateInvoice(id: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["invoices"] });
       queryClient.invalidateQueries({ queryKey: ["invoices", id] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({ queryKey: ["reports"] });
       router.push(`/invoices/${id}`);
     },
   });
@@ -98,6 +100,8 @@ export function useMarkInvoiceSent() {
     onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: ["invoices"] });
       queryClient.invalidateQueries({ queryKey: ["invoices", id] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({ queryKey: ["reports"] });
     },
   });
 }
