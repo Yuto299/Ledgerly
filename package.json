@@ -16,7 +16,7 @@
     "prisma:studio": "prisma studio",
     "prisma:seed": "tsx prisma/seed.ts",
     "postinstall": "prisma generate",
-    "vercel-build": "prisma generate && prisma migrate resolve --applied 20260117191843_add_hourly_rate_to_projects || true && prisma migrate resolve --applied 20260226130355_add_hours_to_invoice_items || true && prisma migrate deploy && next build"
+    "vercel-build": "prisma generate && prisma migrate resolve --applied 20260110110034_init || true && prisma migrate resolve --applied 20260111025512_add_user_settings || true && prisma migrate resolve --applied 20260117191843_add_hourly_rate_to_projects || true && prisma migrate resolve --applied 20260226130355_add_hours_to_invoice_items || true && prisma migrate deploy && next build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
