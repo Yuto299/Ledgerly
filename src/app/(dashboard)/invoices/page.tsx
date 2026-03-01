@@ -2,10 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import {
-  useInvoices,
-  useDeleteInvoice,
-} from "@/features/invoices/hooks/useInvoices";
+import { useInvoices } from "@/features/invoices/hooks/useInvoices";
 import Card from "@/components/atoms/Card";
 import Button from "@/components/atoms/Button";
 import Badge from "@/components/atoms/Badge";
@@ -34,29 +31,7 @@ export default function InvoicesPage() {
   const { data, isLoading, error } = useInvoices({
     status: statusFilter || undefined,
   });
-  const { mutate: deleteInvoice } = useDeleteInvoice();
   const { addToast } = useToast();
-  const [deletingId, setDeletingId] = useState<string | null>(null);
-
-  const handleDelete = (invoiceId: string, invoiceNumber: string) => {
-    if (
-      window.confirm(
-        `請求書「${invoiceNumber}」を削除しますか？\n関連する入金記録も削除されます。`
-      )
-    ) {
-      setDeletingId(invoiceId);
-      deleteInvoice(invoiceId, {
-        onSuccess: () => {
-          addToast("請求書を削除しました", "success");
-          setDeletingId(null);
-        },
-        onError: (error) => {
-          addToast(`削除に失敗しました: ${error.message}`, "error");
-          setDeletingId(null);
-        },
-      });
-    }
-  };
 
   const handleExportCSV = () => {
     if (!invoices || invoices.length === 0) {
@@ -89,7 +64,7 @@ export default function InvoicesPage() {
         { label: "入金済", key: "paidAmount" },
         { label: "未払金額", key: "unpaidAmount" },
       ],
-      `invoices_${new Date().toISOString().split("T")[0]}.csv`
+      `invoices_${new Date().toISOString().split("T")[0]}.csv`,
     );
 
     addToast("CSVをエクスポートしました", "success");
@@ -184,9 +159,6 @@ export default function InvoicesPage() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     ステータス
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    操作
-                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -230,26 +202,6 @@ export default function InvoicesPage() {
                         {STATUS_LABELS[invoice.status]}
                       </Badge>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Link
-                        href={`/invoices/${invoice.id}/edit`}
-                        className="text-primary-600 hover:text-primary-900 mr-4"
-                      >
-                        編集
-                      </Link>
-                      <button
-                        onClick={() =>
-                          handleDelete(
-                            invoice.id,
-                            invoice.invoiceNumber || "請求書"
-                          )
-                        }
-                        disabled={deletingId === invoice.id}
-                        className="text-red-600 hover:text-red-900 disabled:opacity-50"
-                      >
-                        {deletingId === invoice.id ? "削除中..." : "削除"}
-                      </button>
-                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -262,7 +214,7 @@ export default function InvoicesPage() {
         <div className="mt-4 flex justify-center gap-2">
           {Array.from(
             { length: data.pagination.totalPages },
-            (_, i) => i + 1
+            (_, i) => i + 1,
           ).map((page) => (
             <Link
               key={page}

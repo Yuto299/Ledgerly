@@ -1,42 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import {
-  useCustomers,
-  useDeleteCustomer,
-} from "@/features/customers/hooks/useCustomers";
+import { useCustomers } from "@/features/customers/hooks/useCustomers";
 import Card from "@/components/atoms/Card";
 import Button from "@/components/atoms/Button";
 import { TableSkeleton } from "@/components/atoms/Skeleton";
 import { formatDate } from "@/lib/utils";
-import { useToast } from "@/components/providers/ToastProvider";
 
 export default function CustomersPage() {
   const { data, isLoading, error } = useCustomers();
-  const { mutate: deleteCustomer } = useDeleteCustomer();
-  const { addToast } = useToast();
-  const [deletingId, setDeletingId] = useState<string | null>(null);
-
-  const handleDelete = (customerId: string, customerName: string) => {
-    if (
-      window.confirm(
-        `「${customerName}」を削除しますか？\nこの操作は元に戻せません。`
-      )
-    ) {
-      setDeletingId(customerId);
-      deleteCustomer(customerId, {
-        onSuccess: () => {
-          addToast("顧客を削除しました", "success");
-          setDeletingId(null);
-        },
-        onError: (error) => {
-          addToast(`削除に失敗しました: ${error.message}`, "error");
-          setDeletingId(null);
-        },
-      });
-    }
-  };
 
   if (isLoading) {
     return (
@@ -101,9 +73,6 @@ export default function CustomersPage() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     登録日
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    操作
-                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -129,21 +98,6 @@ export default function CustomersPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {formatDate(customer.createdAt)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Link
-                        href={`/customers/${customer.id}/edit`}
-                        className="text-primary-600 hover:text-primary-900 mr-4"
-                      >
-                        編集
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(customer.id, customer.name)}
-                        disabled={deletingId === customer.id}
-                        className="text-red-600 hover:text-red-900 disabled:opacity-50"
-                      >
-                        {deletingId === customer.id ? "削除中..." : "削除"}
-                      </button>
-                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -156,7 +110,7 @@ export default function CustomersPage() {
         <div className="mt-4 flex justify-center gap-2">
           {Array.from(
             { length: data.pagination.totalPages },
-            (_, i) => i + 1
+            (_, i) => i + 1,
           ).map((page) => (
             <Link
               key={page}
