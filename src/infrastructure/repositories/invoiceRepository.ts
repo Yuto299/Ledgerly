@@ -243,12 +243,19 @@ export class InvoiceRepository {
   /**
    * 請求書の入金済み金額を更新
    */
-  async updatePaidAmount(id: string, userId: string, paidAmount: number) {
+  async updatePaidAmount(
+    id: string,
+    userId: string,
+    paidAmount: number,
+    forceStatus?: InvoiceStatus,
+  ) {
     const invoice = await this.findById(id, userId);
     if (!invoice) return null;
 
-    let status = invoice.status;
-    if (paidAmount >= invoice.totalAmount) {
+    let status: InvoiceStatus;
+    if (forceStatus) {
+      status = forceStatus;
+    } else if (paidAmount >= invoice.totalAmount) {
       status = "PAID";
     } else if (paidAmount === 0) {
       status = "DRAFT";

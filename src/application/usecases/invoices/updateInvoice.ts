@@ -123,8 +123,14 @@ export async function updateInvoice(
       validatedData.status !== "PAID"
     ) {
       // PAID → 他ステータス: 全入金を取り消して paidAmount を 0 にリセット
+      // forceStatus を渡してステータスが DRAFT に上書きされるのを防ぐ
       await paymentRepository.deleteAllByInvoiceId(invoiceId);
-      await invoiceRepository.updatePaidAmount(invoiceId, userId, 0);
+      await invoiceRepository.updatePaidAmount(
+        invoiceId,
+        userId,
+        0,
+        validatedData.status as import("@prisma/client").InvoiceStatus,
+      );
     }
   } else if (validatedData.items) {
     // ステータス変更なし + 明細更新: totalAmount が変わるので paidAmount を再計算
