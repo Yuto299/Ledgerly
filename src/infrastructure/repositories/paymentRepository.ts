@@ -57,7 +57,7 @@ export class PaymentRepository {
       paidAt?: Date;
       paymentMethod?: PaymentMethod;
       notes?: string;
-    }
+    },
   ) {
     return prisma.payment.update({
       where: {
@@ -75,6 +75,21 @@ export class PaymentRepository {
     return prisma.payment.update({
       where: {
         id,
+        deletedAt: null,
+      },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+  }
+
+  /**
+   * 請求書に紐づく全入金を論理削除
+   */
+  async deleteAllByInvoiceId(invoiceId: string) {
+    return prisma.payment.updateMany({
+      where: {
+        invoiceId,
         deletedAt: null,
       },
       data: {

@@ -95,27 +95,41 @@ export async function updateInvoice(
 
   // 更新後の請求書を取得
   const invoice = await invoiceRepository.findById(invoiceId, userId);
+  if (!invoice) return null;
 
-  // ステータスがPAIDに変更された場合、未入金分の入金レコードを自動生成してpaidAmountを更新
-  if (
-    validatedData.status === "PAID" &&
-    existingInvoice.status !== "PAID" &&
-    invoice
-  ) {
-    const remaining = invoice.totalAmount - invoice.paidAmount;
-    if (remaining > 0) {
-      await paymentRepository.create({
+  const statusChanged =
+    validatedData.status !== undefined &&
+    validatedData.status !== existingInvoice.status;
+
+  if (statusChanged) {
+    if (validatedData.status === "PAID" && existingInvoice.status !== "PAID") {
+      // → PAID: 未入金分の入金レコードを自動生成して paidAmount を totalAmount に更新
+      const remaining = invoice.totalAmount - invoice.paidAmount;
+      if (remaining > 0) {
+        await paymentRepository.create({
+          invoiceId,
+          amount: remaining,
+          paidAt: new Date(),
+          paymentMethod: "BANK_TRANSFER",
+        });
+      }
+      await invoiceRepository.updatePaidAmount(
         invoiceId,
-        amount: remaining,
-        paidAt: new Date(),
-        paymentMethod: "BANK_TRANSFER",
-      });
+        userId,
+        invoice.totalAmount,
+      );
+    } else if (
+      existingInvoice.status === "PAID" &&
+      validatedData.status !== "PAID"
+    ) {
+      // PAID → 他ステータス: 全入金を取り消して paidAmount を 0 にリセット
+      await paymentRepository.deleteAllByInvoiceId(invoiceId);
+      await invoiceRepository.updatePaidAmount(invoiceId, userId, 0);
     }
-    await invoiceRepository.updatePaidAmount(
-      invoiceId,
-      userId,
-      invoice.totalAmount,
-    );
+  } else if (validatedData.items) {
+    // ステータス変更なし + 明細更新: totalAmount が変わるので paidAmount を再計算
+    const totalPaid = await paymentRepository.getTotalPaidAmount(invoiceId);
+    await invoiceRepository.updatePaidAmount(invoiceId, userId, totalPaid);
   }
 
   // 最終的な請求書を返す
