@@ -1,4 +1,6 @@
+import { prisma } from "@/infrastructure/db/prisma";
 import { invoiceRepository } from "@/infrastructure/repositories/invoiceRepository";
+import { paymentRepository } from "@/infrastructure/repositories/paymentRepository";
 import {
   UpdateInvoiceDto,
   updateInvoiceSchema,
@@ -11,7 +13,7 @@ import { NotFoundError } from "@/lib/api/errors";
 export async function updateInvoice(
   userId: string,
   invoiceId: string,
-  data: UpdateInvoiceDto
+  data: UpdateInvoiceDto,
 ) {
   // バリデーション
   const validatedData = updateInvoiceSchema.parse(data);
@@ -93,8 +95,29 @@ export async function updateInvoice(
 
   // 更新後の請求書を取得
   const invoice = await invoiceRepository.findById(invoiceId, userId);
-  return invoice;
-}
 
-// prismaインポート追加
-import { prisma } from "@/infrastructure/db/prisma";
+  // ステータスがPAIDに変更された場合、未入金分の入金レコードを自動生成してpaidAmountを更新
+  if (
+    validatedData.status === "PAID" &&
+    existingInvoice.status !== "PAID" &&
+    invoice
+  ) {
+    const remaining = invoice.totalAmount - invoice.paidAmount;
+    if (remaining > 0) {
+      await paymentRepository.create({
+        invoiceId,
+        amount: remaining,
+        paidAt: new Date(),
+        paymentMethod: "BANK_TRANSFER",
+      });
+    }
+    await invoiceRepository.updatePaidAmount(
+      invoiceId,
+      userId,
+      invoice.totalAmount,
+    );
+  }
+
+  // 最終的な請求書を返す
+  return invoiceRepository.findById(invoiceId, userId);
+}
