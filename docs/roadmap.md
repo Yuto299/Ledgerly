@@ -250,9 +250,9 @@
   - [x] PaymentRepository（入金合計計算）
 - [x] Domain Service のテスト
   - [x] ReportService（月次サマリ集計）
-- [ ] その他の Domain Service テスト
-  - [ ] InvoiceService（明細から合計金額算出）
-  - [ ] PaymentService（自動 PAID 更新ロジック）
+- [x] その他の Domain Service テスト
+  - [x] InvoiceService（明細から合計金額算出）
+  - [x] PaymentService（自動 PAID 更新ロジック）
 
 ### 6.2 統合テスト ✅
 
@@ -260,10 +260,10 @@
   - [x] 請求書作成 + 明細
   - [x] 入金登録 + 自動 PAID 更新
   - [x] 経費登録
-- [ ] API Route Handlers のテスト
-  - [ ] 認証チェック
-  - [ ] バリデーションエラー
-  - [ ] CRUD 操作
+- [x] API Route Handlers のテスト
+  - [x] 認証チェック
+  - [x] バリデーションエラー
+  - [x] CRUD 操作
 
 ### 6.3 E2E テスト（任意）
 
@@ -404,6 +404,15 @@
 - ✅ `tests/unit/infrastructure/repositories/invoiceRepository.test.ts` - 請求書ステータス更新のテスト
 - ✅ `tests/unit/infrastructure/repositories/paymentRepository.test.ts` - 入金合計計算のテスト
 - ✅ `tests/unit/domain/services/reportService.test.ts` - レポート集計ロジックのテスト
+- ✅ `tests/unit/domain/services/invoiceService.test.ts` - 請求書明細から合計金額算出のテスト
+- ✅ `tests/unit/domain/services/paymentService.test.ts` - 自動PAID更新ロジックのテスト
+
+**統合テスト（Integration Tests）:**
+
+- ✅ `tests/integration/usecases/invoices.test.ts` - 請求書作成・更新と明細の統合テスト
+- ✅ `tests/integration/usecases/payments.test.ts` - 入金登録と自動 PAID 更新の統合テスト
+- ✅ `tests/integration/usecases/expenses.test.ts` - 経費登録の統合テスト
+- ✅ `tests/integration/api/customers.test.ts` - API Route Handlers（認証チェック、バリデーションエラー、CRUD操作）のテスト
 
 ---
 
@@ -416,7 +425,7 @@
 | Phase 3   | 100% | 完了                 |
 | Phase 4   | 100% | 完了                 |
 | Phase 5   | 100% | 完了                 |
-| Phase 6   | 70%  | 統合テスト完了       |
+| Phase 6   | 90%  | 単体・統合テスト完了 |
 | Phase 7.1 | 100% | UX 改善完了          |
 | Phase 7.2 | 100% | PDF 出力完了         |
 | Phase 7.3 | 100% | 支払期限アラート完了 |
@@ -424,7 +433,7 @@
 | Phase 7.5 | 100% | セキュリティ強化完了 |
 | Phase 7.6 | 100% | ユーザー設定機能完了 |
 
-**全体進捗: 98%**（Phase 1-5, Phase 7.1-7.6 完了、Phase 6 70%）
+**全体進捗: 99%**（Phase 1-5, Phase 7.1-7.6 完了、Phase 6 90%）
 
 ---
 
@@ -480,6 +489,7 @@
 - ✅ `tests/integration/usecases/invoices.test.ts` - 請求書作成・更新と明細の統合テスト
 - ✅ `tests/integration/usecases/payments.test.ts` - 入金登録と自動 PAID 更新の統合テスト
 - ✅ `tests/integration/usecases/expenses.test.ts` - 経費登録の統合テスト
+- ✅ `tests/integration/api/customers.test.ts` - API Route Handlers（認証チェック、バリデーションエラー、CRUD操作）のテスト
 
 ### Phase 7.1 実装済み UX 改善
 
