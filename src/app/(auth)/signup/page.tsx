@@ -14,6 +14,16 @@ export default function SignupPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  // パスワード要件（サーバー側 strongPasswordSchema と一致させること）
+  const passwordRules = [
+    { label: "8文字以上", ok: password.length >= 8 },
+    { label: "大文字を含む", ok: /[A-Z]/.test(password) },
+    { label: "小文字を含む", ok: /[a-z]/.test(password) },
+    { label: "数字を含む", ok: /[0-9]/.test(password) },
+    { label: "記号を含む", ok: /[^A-Za-z0-9]/.test(password) },
+  ];
+  const passwordValid = passwordRules.every((r) => r.ok);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -144,7 +154,8 @@ export default function SignupPage() {
                     required
                     minLength={8}
                     className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    placeholder="8文字以上で入力してください"
+                    placeholder="••••••••"
+                    aria-describedby="password-rules"
                   />
                   <button
                     type="button"
@@ -189,11 +200,30 @@ export default function SignupPage() {
                     )}
                   </button>
                 </div>
+                {/* パスワード要件のライブチェックリスト */}
+                <ul
+                  id="password-rules"
+                  className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1"
+                >
+                  {passwordRules.map((rule) => (
+                    <li
+                      key={rule.label}
+                      className={`flex items-center gap-1 text-xs transition-colors ${
+                        rule.ok ? "text-green-600" : "text-gray-400"
+                      }`}
+                    >
+                      <span className="material-symbols-outlined text-[14px] leading-none">
+                        {rule.ok ? "check_circle" : "radio_button_unchecked"}
+                      </span>
+                      {rule.label}
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={isLoading || !passwordValid}
                 className="w-full py-3 px-4 bg-slate-900 text-white font-medium rounded-md hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-700 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {isLoading ? (
