@@ -8,7 +8,7 @@ interface CheckIconProps {
 export default function CheckIcon({ className }: CheckIconProps) {
   return (
     <svg
-      className={cn("w-5 h-5 text-blue-600 flex-shrink-0", className)}
+      className={cn("w-5 h-5 text-slate-900 flex-shrink-0", className)}
       fill="currentColor"
       viewBox="0 0 20 20"
       aria-hidden="true"

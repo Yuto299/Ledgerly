@@ -55,24 +55,24 @@ const FEATURES = [
 const BENEFITS = [
   {
     icon: "bolt",
-    iconBg: "bg-blue-50",
-    iconText: "text-blue-600",
+    iconBg: "bg-slate-100",
+    iconText: "text-slate-700",
     title: "登録後3分で請求書完成",
     description:
       "面倒な初期設定は一切不要。テンプレートを選んで、顧客情報と金額を入力するだけ。今日から請求業務を効率化できます。",
   },
   {
     icon: "touch_app",
-    iconBg: "bg-green-50",
-    iconText: "text-green-600",
+    iconBg: "bg-slate-100",
+    iconText: "text-slate-700",
     title: "迷わない操作性",
     description:
       "会計ソフトが初めての方でも安心。直感的なデザインで、やりたいことがすぐに見つかる。ストレスフリーな会計管理を実現します。",
   },
   {
     icon: "verified",
-    iconBg: "bg-gray-100",
-    iconText: "text-gray-700",
+    iconBg: "bg-slate-100",
+    iconText: "text-slate-700",
     title: "ずっと無料で使える",
     description:
       "月10件までの請求書なら永久無料。クレジットカードの登録も不要。事業が成長したら、お得な有料プランへ簡単アップグレード。",
@@ -147,27 +147,19 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-16 sm:py-20 lg:py-28 px-4 overflow-hidden bg-gradient-to-b from-blue-50/60 to-white">
-        {/* Background decoration */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-10 right-0 w-[28rem] h-[28rem] bg-blue-200/30 rounded-full blur-3xl"></div>
-        </div>
-
+      <section className="relative py-16 sm:py-20 lg:py-28 px-4 overflow-hidden border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left Column - Text Content */}
             <div className="space-y-6 sm:space-y-8 animate-fade-in">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold ring-1 ring-blue-100">
-                <span className="material-symbols-outlined text-[18px]">
-                  bolt
-                </span>
+              <div className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium tracking-wide">
                 フリーランス・個人事業主向け
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
-                会計管理を
+              <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-bold text-gray-900 leading-[1.12] tracking-tight">
+                会計管理を、
                 <br />
-                <span className="text-blue-600">もっとシンプルに</span>
+                もっとシンプルに。
               </h1>
 
               <p className="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed">
@@ -176,15 +168,8 @@ export default function Home() {
 
               <div>
                 <Link href="/signup">
-                  <Button
-                    size="lg"
-                    className="shadow-sm hover:shadow-md"
-                    aria-label="無料で会員登録を始める"
-                  >
+                  <Button size="lg" aria-label="無料で会員登録を始める">
                     今すぐ無料で始める
-                    <span className="material-symbols-outlined text-[20px]">
-                      arrow_forward
-                    </span>
                   </Button>
                 </Link>
               </div>
@@ -240,11 +225,11 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="h-32 sm:h-40 bg-white rounded-xl border border-gray-200/80 flex items-end justify-around p-3 sm:p-4">
-                    <div className="w-6 sm:w-8 md:w-10 bg-blue-200 rounded-t" style={{ height: "40%" }}></div>
-                    <div className="w-6 sm:w-8 md:w-10 bg-blue-300 rounded-t" style={{ height: "65%" }}></div>
-                    <div className="w-6 sm:w-8 md:w-10 bg-blue-600 rounded-t" style={{ height: "85%" }}></div>
-                    <div className="w-6 sm:w-8 md:w-10 bg-blue-500 rounded-t" style={{ height: "70%" }}></div>
-                    <div className="w-6 sm:w-8 md:w-10 bg-blue-200 rounded-t" style={{ height: "30%" }}></div>
+                    <div className="w-6 sm:w-8 md:w-10 bg-slate-200 rounded-t" style={{ height: "40%" }}></div>
+                    <div className="w-6 sm:w-8 md:w-10 bg-slate-300 rounded-t" style={{ height: "65%" }}></div>
+                    <div className="w-6 sm:w-8 md:w-10 bg-slate-800 rounded-t" style={{ height: "85%" }}></div>
+                    <div className="w-6 sm:w-8 md:w-10 bg-slate-600 rounded-t" style={{ height: "70%" }}></div>
+                    <div className="w-6 sm:w-8 md:w-10 bg-slate-200 rounded-t" style={{ height: "30%" }}></div>
                   </div>
                 </div>
               </div>
@@ -278,10 +263,10 @@ export default function Home() {
                 className="group bg-white rounded-2xl shadow-sm border border-gray-200/80 p-6 sm:p-8 transition-all hover:shadow-md hover:border-gray-300"
               >
                 <div
-                  className="bg-blue-50 text-blue-600 rounded-xl w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center mb-5 transition-colors group-hover:bg-blue-100"
+                  className="bg-slate-100 text-slate-700 rounded-lg w-11 h-11 flex items-center justify-center mb-5"
                   aria-hidden="true"
                 >
-                  <span className="material-symbols-outlined text-[26px] sm:text-[28px]">
+                  <span className="material-symbols-outlined text-[24px]">
                     {feature.icon}
                   </span>
                 </div>
@@ -359,7 +344,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="inline-block mb-6">
-              <span className="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
+              <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium tracking-wide">
                 シンプルな料金プラン
               </span>
             </div>
@@ -378,16 +363,16 @@ export default function Home() {
             {PLANS.map((plan) => (
               <article
                 key={plan.name}
-                className={`relative bg-white rounded-2xl p-6 sm:p-8 transition-all ${
+                className={`relative bg-white rounded-xl p-6 sm:p-8 transition-all ${
                   plan.featured
-                    ? "border-2 border-blue-500 shadow-lg md:-mt-2"
-                    : "border border-gray-200/80 shadow-sm hover:shadow-md hover:border-gray-300"
+                    ? "border-2 border-slate-900 md:-mt-2"
+                    : "border border-gray-200/80 hover:border-gray-300"
                 } ${plan.disabled ? "opacity-70" : ""}`}
               >
                 {plan.featured && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                     <span
-                      className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold shadow-sm"
+                      className="bg-slate-900 text-white px-3.5 py-1 rounded-full text-xs font-semibold"
                       aria-label="おすすめプラン"
                     >
                       おすすめ
@@ -400,10 +385,10 @@ export default function Home() {
                   </h3>
                   <div className="flex items-end justify-center gap-2 mb-4">
                     <span
-                      className={`font-extrabold leading-none tracking-tight ${
+                      className={`font-bold leading-none tracking-tight text-gray-900 ${
                         plan.disabled
                           ? "text-2xl sm:text-3xl text-gray-500"
-                          : `text-4xl sm:text-5xl ${plan.featured ? "text-blue-600" : "text-gray-900"}`
+                          : "text-4xl sm:text-5xl"
                       }`}
                     >
                       {plan.price}
@@ -460,36 +445,30 @@ export default function Home() {
 
       {/* CTA */}
       <section
-        className="py-24 px-4 bg-blue-600 text-white relative overflow-hidden"
+        className="py-24 px-4 bg-slate-900 text-white"
         aria-labelledby="cta-heading"
       >
-        <div className="absolute inset-0 opacity-10" aria-hidden="true">
-          <div className="absolute -top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-10 right-10 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-        </div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2
             id="cta-heading"
-            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight tracking-tight"
+            className="text-3xl sm:text-4xl font-bold mb-4 leading-tight tracking-tight"
           >
             今すぐ始めませんか？
           </h2>
-          <p className="text-base sm:text-lg md:text-xl mb-10 text-blue-50 leading-relaxed">
+          <p className="text-base sm:text-lg mb-8 text-slate-300 leading-relaxed">
             アカウント作成は30秒。今日から会計業務を効率化。
           </p>
           <Link href="/signup" className="inline-block w-full sm:w-auto">
             <Button
               size="lg"
-              className="w-full sm:w-auto bg-white text-blue-700 hover:bg-blue-50 shadow-md font-bold"
+              variant="secondary"
+              className="w-full sm:w-auto"
               aria-label="無料で会員登録を開始"
             >
               無料で始める
-              <span className="material-symbols-outlined text-[20px]">
-                arrow_forward
-              </span>
             </Button>
           </Link>
-          <p className="mt-6 text-sm text-blue-100/90">
+          <p className="mt-6 text-sm text-slate-400">
             まずは無料で試せる • 解約自由 • データ安全管理
           </p>
         </div>
@@ -505,7 +484,7 @@ export default function Home() {
             <div className="text-center md:text-left">
               <div className="flex items-center gap-2 mb-2 justify-center md:justify-start">
                 <span
-                  className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center"
+                  className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center"
                   aria-hidden="true"
                 >
                   <span className="text-white font-bold text-sm">L</span>

@@ -34,7 +34,7 @@ export default function Logo({
     <span className={cn("flex items-center gap-2", className)}>
       <span
         className={cn(
-          "flex items-center justify-center rounded-lg bg-blue-600 text-white font-bold shadow-sm",
+          "flex items-center justify-center rounded-lg bg-slate-900 text-white font-bold",
           markSizes[size],
         )}
       >
