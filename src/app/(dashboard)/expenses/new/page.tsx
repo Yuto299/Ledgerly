@@ -65,7 +65,7 @@ export default function NewExpensePage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">経費登録</h1>
+      <h1 className="text-xl font-bold mb-6">経費登録</h1>
 
       <Card>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

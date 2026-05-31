@@ -59,7 +59,7 @@ export default function ProjectsPage() {
   return (
     <div className="px-4 py-4 md:px-0 md:py-0">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold">案件管理</h1>
+        <h1 className="text-xl font-bold">案件管理</h1>
         <Link href="/projects/new">
           <Button className="w-full sm:w-auto">+ 新規案件</Button>
         </Link>

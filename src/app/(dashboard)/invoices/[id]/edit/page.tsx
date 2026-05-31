@@ -46,7 +46,7 @@ export default function EditInvoicePage({
 
   return (
     <div className="max-w-4xl">
-      <h1 className="text-3xl font-bold mb-6">請求書編集</h1>
+      <h1 className="text-xl font-bold mb-6">請求書編集</h1>
 
       {updateError && (
         <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded">

@@ -48,15 +48,15 @@ export default function StatCard({
 
   return (
     <div className="group bg-white rounded-xl border border-gray-200/80 shadow-sm p-5 transition-all hover:shadow-md hover:border-gray-300">
-      <div className="flex items-start justify-between mb-4">
+      <div className="flex items-start justify-between mb-3">
         <span
           className={cn(
-            "flex items-center justify-center w-10 h-10 rounded-lg",
+            "flex items-center justify-center w-9 h-9 rounded-lg",
             t.iconBg,
             t.iconText,
           )}
         >
-          <span className="material-symbols-outlined text-[22px]">{icon}</span>
+          <span className="material-symbols-outlined text-[20px]">{icon}</span>
         </span>
         {hasChange && (
           <span
@@ -75,12 +75,12 @@ export default function StatCard({
           </span>
         )}
       </div>
-      <h3 className="text-sm font-medium text-gray-500 mb-1 leading-tight">
+      <h3 className="text-[13px] font-medium text-gray-500 mb-1 leading-tight">
         {label}
       </h3>
       <p
         className={cn(
-          "text-2xl sm:text-3xl font-bold text-gray-900 leading-tight tracking-tight tabular-nums",
+          "text-2xl font-bold text-gray-900 leading-tight tracking-tight tabular-nums",
           valueClassName,
         )}
       >

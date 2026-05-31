@@ -115,7 +115,7 @@ export default function InvoiceDetailPage({
     <div>
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold">
+          <h1 className="text-xl font-bold">
             請求書 {invoice.invoiceNumber || `#${invoice.id.slice(0, 8)}`}
           </h1>
           <div className="mt-2">

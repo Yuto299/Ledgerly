@@ -89,7 +89,7 @@ export default function SettingsPage() {
   return (
     <div className="p-8 max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">設定</h1>
+        <h1 className="text-xl font-bold text-gray-900 mb-2">設定</h1>
         <p className="text-gray-600">
           請求書に表示される情報を設定してください
         </p>

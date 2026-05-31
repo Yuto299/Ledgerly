@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import Logo from "@/components/atoms/Logo";
 
 const navigation = [
   { name: "ダッシュボード", href: "/dashboard", icon: "dashboard" },
@@ -24,7 +25,7 @@ export default function Sidebar() {
       {/* モバイルメニューボタン */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="lg:hidden fixed top-3 left-3 z-50 p-2.5 rounded-lg bg-gray-900 text-white shadow-lg hover:bg-gray-800 transition-colors"
+        className="lg:hidden fixed top-3 left-3 z-50 p-2.5 rounded-lg bg-white text-gray-700 border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors"
         aria-label="メニュー"
         aria-expanded={isMobileMenuOpen}
       >
@@ -36,7 +37,7 @@ export default function Sidebar() {
       {/* オーバーレイ */}
       {isMobileMenuOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-40 z-40"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
@@ -45,7 +46,7 @@ export default function Sidebar() {
       <div
         className={`
           fixed lg:static inset-y-0 left-0 z-40
-          w-64 bg-gray-900 text-white transform transition-transform duration-300 ease-in-out
+          w-[220px] bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out
           ${
             isMobileMenuOpen
               ? "translate-x-0"
@@ -53,17 +54,10 @@ export default function Sidebar() {
           }
         `}
       >
-        <div className="flex items-center gap-2 p-4 sm:p-6">
-          <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/90 text-white">
-            <span className="material-symbols-outlined text-[20px]">
-              account_balance_wallet
-            </span>
-          </span>
-          <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
-            Ledgerly
-          </h1>
+        <div className="flex items-center px-5 py-5">
+          <Logo size="md" variant="dark" />
         </div>
-        <nav className="mt-2 sm:mt-4 px-3 space-y-1">
+        <nav className="mt-1 px-3 space-y-0.5">
           {navigation.map((item) => {
             const isActive =
               pathname === item.href || pathname?.startsWith(item.href + "/");
@@ -73,15 +67,15 @@ export default function Sidebar() {
                 href={item.href}
                 onClick={() => setIsMobileMenuOpen(false)}
                 aria-current={isActive ? "page" : undefined}
-                className={`flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                className={`flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-gray-800 text-white"
-                    : "text-gray-400 hover:bg-gray-800/60 hover:text-white"
+                    ? "bg-blue-50 text-blue-700"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                 }`}
               >
                 <span
                   className={`material-symbols-outlined mr-3 text-[20px] ${
-                    isActive ? "text-blue-400" : "text-gray-500"
+                    isActive ? "text-blue-600" : "text-gray-400"
                   }`}
                 >
                   {item.icon}

@@ -74,7 +74,7 @@ export default function ProjectDetailPage({
     <div>
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold">{project.name}</h1>
+          <h1 className="text-xl font-bold">{project.name}</h1>
           <div className="mt-2">
             <Badge variant={STATUS_VARIANTS[project.status]}>
               {STATUS_LABELS[project.status]}

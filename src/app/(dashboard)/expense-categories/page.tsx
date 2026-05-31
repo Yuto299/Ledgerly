@@ -92,7 +92,7 @@ export default function ExpenseCategoriesPage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">経費カテゴリ</h1>
+        <h1 className="text-xl font-bold">経費カテゴリ</h1>
         <Button onClick={() => handleOpenModal()}>
           <span className="material-symbols-outlined text-[18px] mr-2">
             add

@@ -95,8 +95,8 @@ export default function DashboardPage() {
 
   return (
     <div className="px-4 py-6 md:px-6 md:py-8 max-w-7xl mx-auto">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight leading-tight">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <h1 className="text-xl font-bold text-gray-900 tracking-tight leading-tight">
           ダッシュボード
         </h1>
         <input
@@ -259,7 +259,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
         {/* 月別推移グラフ */}
         <Card className="transition-shadow hover:shadow-md">
-          <h2 className="text-base sm:text-lg font-semibold mb-5 text-gray-900 leading-tight tracking-tight">
+          <h2 className="text-base font-semibold mb-5 text-gray-900 leading-tight tracking-tight">
             月別推移
           </h2>
           <ResponsiveContainer width="100%" height={280}>
@@ -324,7 +324,7 @@ export default function DashboardPage() {
 
         {/* 経費カテゴリ別円グラフ */}
         <Card className="transition-shadow hover:shadow-md">
-          <h2 className="text-base sm:text-lg font-semibold mb-5 text-gray-900 leading-tight tracking-tight">
+          <h2 className="text-base font-semibold mb-5 text-gray-900 leading-tight tracking-tight">
             経費カテゴリ別内訳
           </h2>
           {expenseBreakdown.length > 0 ? (
@@ -397,7 +397,7 @@ export default function DashboardPage() {
 
       {/* 案件別売上ランキング */}
       <Card className="mb-8 transition-shadow hover:shadow-md">
-        <h2 className="text-base sm:text-lg font-semibold mb-5 text-gray-900 leading-tight tracking-tight">
+        <h2 className="text-base font-semibold mb-5 text-gray-900 leading-tight tracking-tight">
           案件別売上ランキング
         </h2>
         {projectSales.length > 0 ? (
@@ -460,7 +460,7 @@ export default function DashboardPage() {
         {/* 最近の請求書 */}
         <Card className="hover:shadow-md transition-shadow">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-base sm:text-lg font-semibold text-gray-800 leading-tight tracking-tight">
+            <h2 className="text-base font-semibold text-gray-900 leading-tight tracking-tight">
               最近の請求書
             </h2>
             <Link href="/invoices">
@@ -518,7 +518,7 @@ export default function DashboardPage() {
         {/* 最近の経費 */}
         <Card className="hover:shadow-md transition-shadow">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-base sm:text-lg font-semibold text-gray-800 leading-tight tracking-tight">
+            <h2 className="text-base font-semibold text-gray-900 leading-tight tracking-tight">
               最近の経費
             </h2>
             <Link href="/expenses">
@@ -587,8 +587,8 @@ export default function DashboardPage() {
 function DashboardSkeleton() {
   return (
     <div className="px-4 py-6 md:px-6 md:py-8 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <Skeleton variant="rectangular" className="h-8 w-48" />
+      <div className="flex justify-between items-center mb-6">
+        <Skeleton variant="rectangular" className="h-6 w-40" />
         <Skeleton variant="rectangular" className="h-10 w-36" />
       </div>
       {/* サマリカード */}
@@ -598,9 +598,9 @@ function DashboardSkeleton() {
             key={i}
             className="bg-white rounded-xl border border-gray-200/80 shadow-sm p-5"
           >
-            <Skeleton variant="rectangular" className="h-10 w-10 rounded-lg mb-4" />
-            <Skeleton variant="rectangular" className="h-4 w-20 mb-2" />
-            <Skeleton variant="rectangular" className="h-8 w-32" />
+            <Skeleton variant="rectangular" className="h-9 w-9 rounded-lg mb-3" />
+            <Skeleton variant="rectangular" className="h-3.5 w-20 mb-2" />
+            <Skeleton variant="rectangular" className="h-7 w-32" />
           </div>
         ))}
       </div>

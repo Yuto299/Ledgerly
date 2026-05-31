@@ -115,7 +115,7 @@ export default function ProjectReportPage({
     <div>
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold mb-2">案件レポート</h1>
+          <h1 className="text-xl font-bold mb-2">案件レポート</h1>
           <p className="text-xl text-gray-600">{project.project.name}</p>
         </div>
         <Link href={`/projects/${id}`}>

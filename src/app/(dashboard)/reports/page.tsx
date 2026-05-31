@@ -61,7 +61,7 @@ export default function ReportsPage() {
   return (
     <div className="px-4 py-4 md:px-0 md:py-0">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold">月別レポート</h1>
+        <h1 className="text-xl font-bold">月別レポート</h1>
         <div className="flex gap-4 w-full sm:w-auto">
           <select
             value={selectedMonth}
@@ -84,7 +84,7 @@ export default function ReportsPage() {
             <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-2">
               売上（入金ベース）
             </h3>
-            <p className="text-2xl sm:text-3xl font-bold text-gray-900">
+            <p className="text-2xl font-bold text-gray-900">
               {formatCurrency(summary.revenue)}
             </p>
             <p className="text-sm text-gray-500 mt-2">入金された金額</p>
@@ -94,7 +94,7 @@ export default function ReportsPage() {
             <h3 className="text-sm font-medium text-gray-600 mb-2">
               請求額（請求ベース）
             </h3>
-            <p className="text-3xl font-bold text-gray-900">
+            <p className="text-2xl font-bold text-gray-900">
               {formatCurrency(summary.billedAmount)}
             </p>
             <p className="text-sm text-gray-500 mt-2">発行した請求書の合計</p>
@@ -102,7 +102,7 @@ export default function ReportsPage() {
 
           <Card>
             <h3 className="text-sm font-medium text-gray-600 mb-2">経費</h3>
-            <p className="text-3xl font-bold text-gray-900">
+            <p className="text-2xl font-bold text-gray-900">
               {formatCurrency(summary.expenses)}
             </p>
             <p className="text-sm text-gray-500 mt-2">発生した経費の合計</p>
@@ -111,7 +111,7 @@ export default function ReportsPage() {
           <Card>
             <h3 className="text-sm font-medium text-gray-600 mb-2">利益</h3>
             <p
-              className={`text-3xl font-bold ${
+              className={`text-2xl font-bold ${
                 summary.profit >= 0 ? "text-green-600" : "text-red-600"
               }`}
             >

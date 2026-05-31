@@ -14,7 +14,7 @@ export default function CustomersPage() {
     return (
       <div>
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">顧客管理</h1>
+          <h1 className="text-xl font-bold">顧客管理</h1>
           <Button disabled>+ 新規顧客</Button>
         </div>
         <Card>
@@ -40,7 +40,7 @@ export default function CustomersPage() {
   return (
     <div className="px-4 py-4 md:px-0 md:py-0">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold">顧客管理</h1>
+        <h1 className="text-xl font-bold">顧客管理</h1>
         <Link href="/customers/new">
           <Button className="w-full sm:w-auto">+ 新規顧客</Button>
         </Link>

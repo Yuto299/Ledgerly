@@ -91,7 +91,7 @@ export default function InvoicesPage() {
   return (
     <div className="px-4 py-4 md:px-0 md:py-0">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold">請求書管理</h1>
+        <h1 className="text-xl font-bold">請求書管理</h1>
         <div className="flex gap-2 w-full sm:w-auto">
           <Button
             variant="outline"
