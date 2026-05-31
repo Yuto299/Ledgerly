@@ -13,7 +13,24 @@
       "Bash(kill 74582)",
       "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --screenshot=/tmp/lp_new.png --window-size=1280,2400 http://localhost:3001/)",
       "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --screenshot=/tmp/lp_bottom.png --window-size=1280,3400 http://localhost:3001/)",
-      "Bash(lsof -ti:3000)"
+      "Bash(lsof -ti:3000)",
+      "Bash(npx vitest *)",
+      "Bash(docker compose *)",
+      "Bash(docker exec *)",
+      "Bash(npx prisma *)",
+      "Bash(npx next *)",
+      "Bash(echo \"EXIT=$?\")",
+      "Bash(lsof -ti:3000,3001,3002)",
+      "Bash(PGPASSWORD=ledgerly_dev_password psql -h localhost -p 5433 -U ledgerly -d ledgerly -t -c 'SELECT email, name FROM \"User\" LIMIT 5;')",
+      "Bash(PORT=3002 npm run dev)",
+      "Bash(echo \"started, pid $!\")",
+      "Bash(curl -s -X POST http://localhost:3002/api/auth/signup -H 'Content-Type: application/json' -d '{\"name\":\"検証ユーザー\",\"email\":\"verify-test@example.com\",\"password\":\"verifypass123\"}' -w '\\\\nHTTP %{http_code}\\\\n')",
+      "Bash(curl -s -X POST http://localhost:3002/api/auth/signup -H 'Content-Type: application/json' -d '{\"name\":\"検証ユーザー\",\"email\":\"verify-test@example.com\",\"password\":\"VerifyPass123\"}' -w '\\\\nHTTP %{http_code}\\\\n')",
+      "Bash(curl -s -X POST http://localhost:3002/api/auth/signup -H 'Content-Type: application/json' -d '{\"name\":\"検証ユーザー\",\"email\":\"verify-test@example.com\",\"password\":\"VerifyPass123!\"}' -w '\\\\nHTTP %{http_code}\\\\n')",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --hide-scrollbars --screenshot=/tmp/v_login.png --window-size=1280,1000 \"http://localhost:3002/login\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --hide-scrollbars --screenshot=/tmp/v_signup.png --window-size=1280,1000 \"http://localhost:3002/signup\")",
+      "Bash(cp /tmp/shoot.mjs /Users/yutoota/Projects/ledgerly/_shoot_tmp.mjs)",
+      "Bash(node _shoot_tmp.mjs)"
     ]
   }
 }
