@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(lsof -nP -iTCP:3000 -sTCP:LISTEN -t)",
+      "Bash(xargs kill)",
+      "Bash(lsof -nP -iTCP:3000 -sTCP:LISTEN)",
+      "Bash(curl -s -o /tmp/lp.html -w \"%{http_code}\" http://localhost:3000/)",
+      "Bash(grep -iA15 \"login\\\\|signup\\\\|GET /login\\\\|Error\" /private/tmp/claude-501/-Users-yutoota-Projects-ledgerly/5410e1f0-b118-4cc9-aafa-2bb9dd616e64/tasks/bll5ud2jc.output)",
+      "Bash(lsof -ti:3001)",
+      "Bash(lsof -nP -iTCP:3001 -sTCP:LISTEN)"
+    ]
+  }
+}

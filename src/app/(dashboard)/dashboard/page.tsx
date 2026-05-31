@@ -9,10 +9,12 @@ import { formatDate } from "@/lib/utils";
 import Card from "@/components/atoms/Card";
 import Badge from "@/components/atoms/Badge";
 import Button from "@/components/atoms/Button";
+import StatCard from "@/components/molecules/StatCard";
+import Skeleton from "@/components/atoms/Skeleton";
 import Link from "next/link";
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   BarChart,
   Bar,
   PieChart,
@@ -25,6 +27,17 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import {
+  CHART_COLORS,
+  gridProps,
+  xAxisProps,
+  yAxisProps,
+  tooltipContentStyle,
+  tooltipLabelStyle,
+  tooltipCursor,
+  legendProps,
+  formatAxisCurrency,
+} from "@/lib/charts/theme";
 
 const INVOICE_STATUS_LABELS: Record<string, string> = {
   DRAFT: "下書き",
@@ -49,11 +62,7 @@ export default function DashboardPage() {
   const { data: alertsData, isLoading: alertsLoading } = useAlerts();
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">読み込み中...</div>
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   if (!data) {
@@ -73,6 +82,15 @@ export default function DashboardPage() {
     recentExpenses,
   } = data;
 
+  // trend の末尾2件から前月比（%）を算出。前月が0/欠損なら null。
+  const pctChange = (key: "revenue" | "expenses" | "profit"): number | null => {
+    if (trend.length < 2) return null;
+    const cur = trend[trend.length - 1]?.[key];
+    const prev = trend[trend.length - 2]?.[key];
+    if (prev === undefined || cur === undefined || prev === 0) return null;
+    return ((cur - prev) / Math.abs(prev)) * 100;
+  };
+
   return (
     <div className="px-4 py-6 md:px-6 md:py-8 max-w-7xl mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
@@ -83,7 +101,7 @@ export default function DashboardPage() {
           type="month"
           value={selectedMonth}
           onChange={(e) => setSelectedMonth(e.target.value)}
-          className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full sm:w-auto px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm sm:text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
 
@@ -94,10 +112,12 @@ export default function DashboardPage() {
           <div className="mb-8 space-y-4">
             {/* 期限切れアラート */}
             {alertsData.summary.overdueCount > 0 && (
-              <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
+              <div className="bg-red-50 border border-red-200 border-l-4 border-l-red-500 p-4 rounded-xl">
                 <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">⚠️</span>
+                  <div className="flex items-center gap-2.5">
+                    <span className="material-symbols-outlined text-red-500 text-[24px]">
+                      error
+                    </span>
                     <div>
                       <h3 className="text-lg font-semibold text-red-900 leading-tight mb-1">
                         支払期限切れの請求書
@@ -145,10 +165,12 @@ export default function DashboardPage() {
 
             {/* 期限間近アラート（3日以内） */}
             {alertsData.summary.urgentCount > 0 && (
-              <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg">
+              <div className="bg-yellow-50 border border-yellow-200 border-l-4 border-l-yellow-500 p-4 rounded-xl">
                 <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">⏰</span>
+                  <div className="flex items-center gap-2.5">
+                    <span className="material-symbols-outlined text-yellow-500 text-[24px]">
+                      schedule
+                    </span>
                     <div>
                       <h3 className="text-lg font-semibold text-yellow-900 leading-tight mb-1">
                         支払期限間近（3日以内）
@@ -196,193 +218,174 @@ export default function DashboardPage() {
         )}
 
       {/* サマリカード */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
-        <Card className="hover:shadow-md transition-shadow">
-          <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-3 leading-tight">
-            今月の売上
-          </h3>
-          <p className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 leading-tight tracking-tight">
-            {formatCurrency(summary.revenue)}
-          </p>
-        </Card>
-
-        <Card className="hover:shadow-md transition-shadow">
-          <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-3 leading-tight">
-            今月の経費
-          </h3>
-          <p className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight tracking-tight">
-            {formatCurrency(summary.expenses)}
-          </p>
-        </Card>
-
-        <Card className="hover:shadow-md transition-shadow">
-          <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-3 leading-tight">
-            今月の利益
-          </h3>
-          <p
-            className={`text-2xl sm:text-3xl font-bold mb-2 leading-tight tracking-tight ${
-              summary.profit >= 0 ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            {formatCurrency(summary.profit)}
-          </p>
-          <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">
-            売上 - 経費
-          </p>
-        </Card>
-
-        <Card className="hover:shadow-md transition-shadow">
-          <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-3 leading-tight">
-            未回収金額
-          </h3>
-          <p className="text-2xl sm:text-3xl font-bold text-orange-600 mb-2 leading-tight tracking-tight">
-            {formatCurrency(summary.unpaidAmount)}
-          </p>
-          <p className="text-sm text-gray-500 leading-relaxed">
-            請求済み未入金
-          </p>
-        </Card>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-8">
+        <StatCard
+          label="今月の売上"
+          value={formatCurrency(summary.revenue)}
+          icon="payments"
+          tone="blue"
+          change={pctChange("revenue")}
+        />
+        <StatCard
+          label="今月の経費"
+          value={formatCurrency(summary.expenses)}
+          icon="receipt_long"
+          tone="purple"
+          change={pctChange("expenses")}
+        />
+        <StatCard
+          label="今月の利益"
+          value={formatCurrency(summary.profit)}
+          icon="savings"
+          tone="green"
+          change={pctChange("profit")}
+          valueClassName={summary.profit >= 0 ? "text-green-600" : "text-red-600"}
+          hint="売上 - 経費"
+        />
+        <StatCard
+          label="未回収金額"
+          value={formatCurrency(summary.unpaidAmount)}
+          icon="hourglass_top"
+          tone="orange"
+          valueClassName="text-orange-600"
+          hint="請求済み未入金"
+        />
       </div>
 
       {/* グラフエリア */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
         {/* 月別推移グラフ */}
-        <Card className="shadow-sm hover:shadow-md transition-shadow">
-          <h2 className="text-base sm:text-lg font-semibold mb-6 text-gray-800 leading-tight tracking-tight">
+        <Card className="transition-shadow hover:shadow-md">
+          <h2 className="text-base sm:text-lg font-semibold mb-5 text-gray-900 leading-tight tracking-tight">
             月別推移
           </h2>
           <ResponsiveContainer width="100%" height={280}>
-            <LineChart
+            <AreaChart
               data={trend}
-              margin={{ top: 5, right: 20, left: -20, bottom: 5 }}
+              margin={{ top: 8, right: 12, left: 0, bottom: 0 }}
             >
               <defs>
                 <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#60a5fa" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#60a5fa" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="colorExpenses" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#c084fc" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#c084fc" stopOpacity={0} />
+                  <stop offset="5%" stopColor={CHART_COLORS.revenue} stopOpacity={0.18} />
+                  <stop offset="95%" stopColor={CHART_COLORS.revenue} stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="colorProfit" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#34d399" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#34d399" stopOpacity={0} />
+                  <stop offset="5%" stopColor={CHART_COLORS.profit} stopOpacity={0.18} />
+                  <stop offset="95%" stopColor={CHART_COLORS.profit} stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid
-                strokeDasharray="3 3"
-                stroke="#e5e7eb"
-                strokeOpacity={0.5}
-              />
-              <XAxis
-                dataKey="month"
-                tick={{ fontSize: 11, fill: "#6b7280" }}
-                axisLine={{ stroke: "#e5e7eb" }}
-                tickLine={{ stroke: "#e5e7eb" }}
-              />
-              <YAxis
-                tickFormatter={(value) => `¥${(value / 1000).toFixed(0)}k`}
-                tick={{ fontSize: 11, fill: "#6b7280" }}
-                width={60}
-                axisLine={{ stroke: "#e5e7eb" }}
-                tickLine={{ stroke: "#e5e7eb" }}
-              />
+              <CartesianGrid {...gridProps} />
+              <XAxis dataKey="month" {...xAxisProps} />
+              <YAxis tickFormatter={formatAxisCurrency} {...yAxisProps} />
               <Tooltip
                 formatter={(value: number) => formatCurrency(value)}
-                contentStyle={{
-                  backgroundColor: "rgba(255, 255, 255, 0.95)",
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "8px",
-                  boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                }}
+                contentStyle={tooltipContentStyle}
+                labelStyle={tooltipLabelStyle}
+                cursor={tooltipCursor}
               />
-              <Legend wrapperStyle={{ fontSize: "13px" }} iconType="circle" />
-              <Line
+              <Legend {...legendProps} />
+              <Area
                 type="monotone"
                 dataKey="revenue"
-                stroke="#60a5fa"
-                strokeWidth={3}
+                stroke={CHART_COLORS.revenue}
+                strokeWidth={2.5}
                 name="売上"
-                dot={{ r: 4, fill: "#60a5fa", strokeWidth: 2, stroke: "#fff" }}
-                activeDot={{ r: 6 }}
                 fill="url(#colorRevenue)"
+                dot={false}
+                activeDot={{ r: 5, strokeWidth: 2, stroke: "#fff" }}
               />
-              <Line
-                type="monotone"
-                dataKey="expenses"
-                stroke="#c084fc"
-                strokeWidth={3}
-                name="経費"
-                dot={{ r: 4, fill: "#c084fc", strokeWidth: 2, stroke: "#fff" }}
-                activeDot={{ r: 6 }}
-                fill="url(#colorExpenses)"
-              />
-              <Line
+              <Area
                 type="monotone"
                 dataKey="profit"
-                stroke="#34d399"
-                strokeWidth={3}
+                stroke={CHART_COLORS.profit}
+                strokeWidth={2.5}
                 name="利益"
-                dot={{ r: 4, fill: "#34d399", strokeWidth: 2, stroke: "#fff" }}
-                activeDot={{ r: 6 }}
                 fill="url(#colorProfit)"
+                dot={false}
+                activeDot={{ r: 5, strokeWidth: 2, stroke: "#fff" }}
               />
-            </LineChart>
+              <Area
+                type="monotone"
+                dataKey="expenses"
+                stroke={CHART_COLORS.expenses}
+                strokeWidth={2}
+                strokeDasharray="5 4"
+                name="経費"
+                fill="none"
+                dot={false}
+                activeDot={{ r: 5, strokeWidth: 2, stroke: "#fff" }}
+              />
+            </AreaChart>
           </ResponsiveContainer>
         </Card>
 
         {/* 経費カテゴリ別円グラフ */}
-        <Card className="shadow-sm hover:shadow-md transition-shadow">
-          <h2 className="text-base sm:text-lg font-semibold mb-6 text-gray-800 leading-tight tracking-tight">
+        <Card className="transition-shadow hover:shadow-md">
+          <h2 className="text-base sm:text-lg font-semibold mb-5 text-gray-900 leading-tight tracking-tight">
             経費カテゴリ別内訳
           </h2>
           {expenseBreakdown.length > 0 ? (
-            <ResponsiveContainer width="100%" height={280}>
-              <PieChart>
-                <Pie
-                  data={expenseBreakdown}
-                  dataKey="amount"
-                  nameKey="categoryName"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={85}
-                  innerRadius={50}
-                  paddingAngle={3}
-                  label={(entry) => {
-                    const percent = (
-                      (entry.amount /
-                        expenseBreakdown.reduce(
-                          (sum, e) => sum + e.amount,
-                          0,
-                        )) *
-                      100
-                    ).toFixed(0);
-                    return `${percent}%`;
-                  }}
-                  labelLine={false}
-                >
-                  {expenseBreakdown.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={entry.categoryColor}
-                      opacity={0.85}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip
-                  formatter={(value: number) => formatCurrency(value)}
-                  contentStyle={{
-                    backgroundColor: "rgba(255, 255, 255, 0.95)",
-                    border: "1px solid #e5e7eb",
-                    borderRadius: "8px",
-                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
+            (() => {
+              const total = expenseBreakdown.reduce(
+                (sum, e) => sum + e.amount,
+                0,
+              );
+              return (
+                <div className="flex flex-col sm:flex-row items-center gap-4">
+                  <ResponsiveContainer width="100%" height={240} className="flex-1">
+                    <PieChart>
+                      <Pie
+                        data={expenseBreakdown}
+                        dataKey="amount"
+                        nameKey="categoryName"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={90}
+                        innerRadius={58}
+                        paddingAngle={2}
+                        stroke="#fff"
+                        strokeWidth={2}
+                        labelLine={false}
+                      >
+                        {expenseBreakdown.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.categoryColor} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        formatter={(value: number) => formatCurrency(value)}
+                        contentStyle={tooltipContentStyle}
+                        labelStyle={tooltipLabelStyle}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  {/* カスタム凡例：色・名称・割合を縦並びで読みやすく */}
+                  <div className="w-full sm:w-44 space-y-2">
+                    {expenseBreakdown.map((entry) => {
+                      const pct = total > 0 ? (entry.amount / total) * 100 : 0;
+                      return (
+                        <div
+                          key={entry.categoryId}
+                          className="flex items-center gap-2 text-sm"
+                        >
+                          <span
+                            className="w-2.5 h-2.5 rounded-sm flex-shrink-0"
+                            style={{ backgroundColor: entry.categoryColor }}
+                          />
+                          <span className="flex-1 truncate text-gray-700">
+                            {entry.categoryName}
+                          </span>
+                          <span className="text-gray-500 tabular-nums">
+                            {pct.toFixed(0)}%
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()
           ) : (
-            <div className="h-[280px] flex items-center justify-center text-gray-500">
+            <div className="h-[240px] flex items-center justify-center text-gray-400">
               データがありません
             </div>
           )}
@@ -390,94 +393,60 @@ export default function DashboardPage() {
       </div>
 
       {/* 案件別売上ランキング */}
-      <Card className="mb-8 shadow-sm hover:shadow-md transition-shadow">
-        <h2 className="text-base sm:text-lg font-semibold mb-6 text-gray-800 leading-tight tracking-tight">
+      <Card className="mb-8 transition-shadow hover:shadow-md">
+        <h2 className="text-base sm:text-lg font-semibold mb-5 text-gray-900 leading-tight tracking-tight">
           案件別売上ランキング
         </h2>
         {projectSales.length > 0 ? (
-          <div className="w-full" style={{ height: 500 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={projectSales.slice(0, 5)}
-                margin={{ top: 60, right: 30, left: 10, bottom: 40 }}
-              >
-                <defs>
-                  <linearGradient
-                    id="gradientBilled"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="0%" stopColor="#60a5fa" stopOpacity={0.9} />
-                    <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.7} />
-                  </linearGradient>
-                  <linearGradient id="gradientPaid" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#34d399" stopOpacity={0.9} />
-                    <stop offset="100%" stopColor="#10b981" stopOpacity={0.7} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#e5e7eb"
-                  strokeOpacity={0.5}
-                />
-                <XAxis
-                  dataKey="projectName"
-                  angle={0}
-                  textAnchor="middle"
-                  interval={0}
-                  tick={{ fontSize: 12, fill: "#6b7280", dy: 10 }}
-                  style={{ fontWeight: 500 }}
-                  axisLine={{ stroke: "#e5e7eb" }}
-                  tickLine={{ stroke: "#e5e7eb" }}
-                  padding={{ left: 10, right: 10 }}
-                />
-                <YAxis
-                  tickFormatter={(value) => `¥${(value / 1000).toFixed(0)}k`}
-                  tick={{ fontSize: 13, fill: "#6b7280" }}
-                  width={70}
-                  domain={[0, (dataMax: number) => Math.ceil(dataMax * 1.2)]}
-                  axisLine={{ stroke: "#e5e7eb" }}
-                  tickLine={{ stroke: "#e5e7eb" }}
-                />
-                <Tooltip
-                  formatter={(value: number) => formatCurrency(value)}
-                  labelStyle={{ fontSize: 14, fontWeight: "bold" }}
-                  contentStyle={{
-                    fontSize: 13,
-                    backgroundColor: "rgba(255, 255, 255, 0.95)",
-                    border: "1px solid #e5e7eb",
-                    borderRadius: "8px",
-                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                  }}
-                />
-                <Legend
-                  verticalAlign="top"
-                  align="right"
-                  wrapperStyle={{ fontSize: "13px", marginTop: "-10px" }}
-                  iconType="circle"
-                  iconSize={10}
-                />
-                <Bar
-                  dataKey="totalBilled"
-                  fill="url(#gradientBilled)"
-                  name="請求額"
-                  radius={[8, 8, 0, 0]}
-                  barSize={55}
-                />
-                <Bar
-                  dataKey="totalPaid"
-                  fill="url(#gradientPaid)"
-                  name="入金額"
-                  radius={[8, 8, 0, 0]}
-                  barSize={55}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          <ResponsiveContainer
+            width="100%"
+            height={Math.max(220, projectSales.slice(0, 5).length * 76)}
+          >
+            <BarChart
+              layout="vertical"
+              data={projectSales.slice(0, 5)}
+              margin={{ top: 4, right: 16, left: 8, bottom: 4 }}
+              barGap={4}
+            >
+              <CartesianGrid {...gridProps} horizontal={false} vertical={true} />
+              <XAxis
+                type="number"
+                tickFormatter={formatAxisCurrency}
+                {...xAxisProps}
+                domain={[0, (dataMax: number) => Math.ceil(dataMax * 1.1)]}
+              />
+              <YAxis
+                type="category"
+                dataKey="projectName"
+                {...yAxisProps}
+                width={120}
+                tick={{ fontSize: 12, fill: "#374151" }}
+              />
+              <Tooltip
+                formatter={(value: number) => formatCurrency(value)}
+                contentStyle={tooltipContentStyle}
+                labelStyle={tooltipLabelStyle}
+                cursor={tooltipCursor}
+              />
+              <Legend {...legendProps} verticalAlign="top" align="right" />
+              <Bar
+                dataKey="totalBilled"
+                fill={CHART_COLORS.billed}
+                name="請求額"
+                radius={[0, 6, 6, 0]}
+                barSize={14}
+              />
+              <Bar
+                dataKey="totalPaid"
+                fill={CHART_COLORS.paid}
+                name="入金額"
+                radius={[0, 6, 6, 0]}
+                barSize={14}
+              />
+            </BarChart>
+          </ResponsiveContainer>
         ) : (
-          <div className="h-[400px] flex items-center justify-center text-gray-500">
+          <div className="h-[220px] flex items-center justify-center text-gray-400">
             データがありません
           </div>
         )}
@@ -511,7 +480,7 @@ export default function DashboardPage() {
                   <Link
                     key={invoice.id}
                     href={`/invoices/${invoice.id}`}
-                    className="block p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition"
+                    className="block p-3 border border-gray-100 rounded-lg hover:bg-gray-50 hover:border-gray-200 transition-colors"
                   >
                     <div className="flex justify-between items-start gap-4">
                       <div className="flex-1 min-w-0">
@@ -568,7 +537,7 @@ export default function DashboardPage() {
                   <Link
                     key={expense.id}
                     href={`/expenses/${expense.id}`}
-                    className="block p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition"
+                    className="block p-3 border border-gray-100 rounded-lg hover:bg-gray-50 hover:border-gray-200 transition-colors"
                   >
                     <div className="flex justify-between items-start gap-4">
                       <div className="flex-1 min-w-0">
@@ -606,6 +575,47 @@ export default function DashboardPage() {
             <p className="text-gray-500 leading-relaxed">データがありません</p>
           )}
         </Card>
+      </div>
+    </div>
+  );
+}
+
+/** ダッシュボード読み込み中のスケルトン */
+function DashboardSkeleton() {
+  return (
+    <div className="px-4 py-6 md:px-6 md:py-8 max-w-7xl mx-auto">
+      <div className="flex justify-between items-center mb-8">
+        <Skeleton variant="rectangular" className="h-8 w-48" />
+        <Skeleton variant="rectangular" className="h-10 w-36" />
+      </div>
+      {/* サマリカード */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-8">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div
+            key={i}
+            className="bg-white rounded-xl border border-gray-200/80 shadow-sm p-5"
+          >
+            <Skeleton variant="rectangular" className="h-10 w-10 rounded-lg mb-4" />
+            <Skeleton variant="rectangular" className="h-4 w-20 mb-2" />
+            <Skeleton variant="rectangular" className="h-8 w-32" />
+          </div>
+        ))}
+      </div>
+      {/* グラフ */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
+        {Array.from({ length: 2 }).map((_, i) => (
+          <div
+            key={i}
+            className="bg-white rounded-xl border border-gray-200/80 shadow-sm p-6"
+          >
+            <Skeleton variant="rectangular" className="h-5 w-32 mb-6" />
+            <Skeleton variant="rectangular" className="h-[240px] w-full rounded-lg" />
+          </div>
+        ))}
+      </div>
+      <div className="bg-white rounded-xl border border-gray-200/80 shadow-sm p-6">
+        <Skeleton variant="rectangular" className="h-5 w-40 mb-6" />
+        <Skeleton variant="rectangular" className="h-[280px] w-full rounded-lg" />
       </div>
     </div>
   );

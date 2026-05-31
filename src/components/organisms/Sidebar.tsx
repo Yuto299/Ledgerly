@@ -53,10 +53,17 @@ export default function Sidebar() {
           }
         `}
       >
-        <div className="p-4 sm:p-6">
-          <h1 className="text-xl sm:text-2xl font-bold">Ledgerly</h1>
+        <div className="flex items-center gap-2 p-4 sm:p-6">
+          <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/90 text-white">
+            <span className="material-symbols-outlined text-[20px]">
+              account_balance_wallet
+            </span>
+          </span>
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
+            Ledgerly
+          </h1>
         </div>
-        <nav className="mt-4 sm:mt-6">
+        <nav className="mt-2 sm:mt-4 px-3 space-y-1">
           {navigation.map((item) => {
             const isActive =
               pathname === item.href || pathname?.startsWith(item.href + "/");
@@ -65,13 +72,18 @@ export default function Sidebar() {
                 key={item.name}
                 href={item.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`flex items-center px-4 sm:px-6 py-2.5 sm:py-3 text-sm font-medium transition-colors ${
+                aria-current={isActive ? "page" : undefined}
+                className={`flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-gray-800 text-white border-l-4 border-blue-500"
-                    : "text-gray-300 hover:bg-gray-800 hover:text-white"
+                    ? "bg-gray-800 text-white"
+                    : "text-gray-400 hover:bg-gray-800/60 hover:text-white"
                 }`}
               >
-                <span className="material-symbols-outlined mr-3 text-[18px] sm:text-[20px]">
+                <span
+                  className={`material-symbols-outlined mr-3 text-[20px] ${
+                    isActive ? "text-blue-400" : "text-gray-500"
+                  }`}
+                >
                   {item.icon}
                 </span>
                 {item.name}
