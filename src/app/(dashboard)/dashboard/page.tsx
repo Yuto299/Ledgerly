@@ -82,12 +82,14 @@ export default function DashboardPage() {
     recentExpenses,
   } = data;
 
-  // trend の末尾2件から前月比（%）を算出。前月が0/欠損なら null。
+  // 前月比（%）を算出。trend から selectedMonth とその前月を探して比較する。
+  // selectedMonth が trend の範囲外、または前月が 0/欠損なら null（バッジ非表示）。
   const pctChange = (key: "revenue" | "expenses" | "profit"): number | null => {
-    if (trend.length < 2) return null;
-    const cur = trend[trend.length - 1]?.[key];
-    const prev = trend[trend.length - 2]?.[key];
-    if (prev === undefined || cur === undefined || prev === 0) return null;
+    const curIdx = trend.findIndex((t) => t.month === selectedMonth);
+    if (curIdx < 1) return null; // 見つからない or 前月が範囲外
+    const cur = trend[curIdx][key];
+    const prev = trend[curIdx - 1][key];
+    if (prev === 0) return null;
     return ((cur - prev) / Math.abs(prev)) * 100;
   };
 
@@ -232,6 +234,7 @@ export default function DashboardPage() {
           icon="receipt_long"
           tone="purple"
           change={pctChange("expenses")}
+          higherIsBetter={false}
         />
         <StatCard
           label="今月の利益"
